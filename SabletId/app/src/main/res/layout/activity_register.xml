@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
             android:text="Email"
             tools:text="Email" />
 
@@ -40,13 +40,13 @@
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login!"
-            tools:text="Login" />
+            android:text="Register"
+            tools:text="Register" />
 
         <Button
             android:id="@+id/btnMoveLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register" />
+            android:text="Back To Login" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

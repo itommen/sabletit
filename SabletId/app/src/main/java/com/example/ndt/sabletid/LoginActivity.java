@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,8 +41,10 @@ public class LoginActivity extends AppCompatActivity {
                                     Intent goToNextActivity = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(goToNextActivity);
                                 }
-
-                                // TODO: Should alert when login failed
+                                else {
+                                    Toast.makeText(LoginActivity.this, "Failed to login, please try again",
+                                            Toast.LENGTH_LONG).show();
+                                }
                             }
                         });
             }

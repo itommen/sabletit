@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,15 +36,27 @@ public class RegisterActivity extends AppCompatActivity {
                         .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful())
+                                if (task.isSuccessful())
                                 {
+                                    Toast.makeText(RegisterActivity.this, "Your account has been created successfully",
+                                            Toast.LENGTH_LONG).show();
                                     Intent goToNextActivity = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(goToNextActivity);
                                 }
-
-                                // TODO: Should alert when login failed
+                                else {
+                                    Toast.makeText(RegisterActivity.this, "Failed to register, please try again",
+                                            Toast.LENGTH_LONG).show();
+                                }
                             }
                         });
+            }
+        });
+
+        findViewById(R.id.btnMoveLogin).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToNextActivity = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(goToNextActivity);
             }
         });
     }
