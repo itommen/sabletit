@@ -24,6 +24,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        findViewById(R.id.registerIndeterminateBar).setVisibility(View.INVISIBLE);
         email = findViewById(R.id.tbRegisterEmail);
         password = findViewById(R.id.etRegisterPassword);
 
@@ -32,10 +33,12 @@ public class RegisterActivity extends AppCompatActivity {
         findViewById(R.id.btnRegister).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                findViewById(R.id.registerIndeterminateBar).setVisibility(View.VISIBLE);
                 auth.createUserWithEmailAndPassword(email.getText().toString().trim(), password.getText().toString().trim())
                         .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+                                findViewById(R.id.registerIndeterminateBar).setVisibility(View.GONE);
                                 if (task.isSuccessful())
                                 {
                                     Toast.makeText(RegisterActivity.this, "Your account has been created successfully",

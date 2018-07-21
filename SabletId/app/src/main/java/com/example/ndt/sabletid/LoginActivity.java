@@ -22,21 +22,25 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
 
         auth = FirebaseAuth.getInstance();
 
+        findViewById(R.id.loginIndeterminateBar).setVisibility(View.INVISIBLE);
         email = findViewById(R.id.tbLoginEmail);
         password = findViewById(R.id.etLoginPassword);
 
         findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                findViewById(R.id.loginIndeterminateBar).setVisibility(View.VISIBLE);
                 auth.signInWithEmailAndPassword(email.getText().toString().trim(), password.getText().toString().trim())
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful())
+                                findViewById(R.id.loginIndeterminateBar).setVisibility(View.GONE);
+                                if (task.isSuccessful())
                                 {
                                     Intent goToNextActivity = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(goToNextActivity);
