@@ -1,9 +1,16 @@
 package com.example.ndt.sabletid.Models;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+import android.support.v4.widget.CircularProgressDrawable;
 
 @Entity
 public class User {
+    @PrimaryKey
+    @NonNull
+    private String id;
+
     private String name, email, phone, avatar;
     private boolean gender;
 
@@ -18,6 +25,15 @@ public class User {
         this.gender = gender;
         this.avatar = avatar;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 
     public String getName() {
         return name;
