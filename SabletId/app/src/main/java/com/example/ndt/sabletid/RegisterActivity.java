@@ -25,7 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         findViewById(R.id.registerIndeterminateBar).setVisibility(View.INVISIBLE);
-        email = findViewById(R.id.tbRegisterEmail);
+        email = findViewById(R.id.etRegisterEmail);
         password = findViewById(R.id.etRegisterPassword);
 
         auth = FirebaseAuth.getInstance();

@@ -3,7 +3,6 @@ package com.example.ndt.sabletid.Models;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.CircularProgressDrawable;
 
 @Entity
 public class User {
@@ -18,7 +17,8 @@ public class User {
 
     }
 
-    public User(String name, String email, String phone, String avatar, boolean gender) {
+    public User(String id, String name, String email, String phone, String avatar, boolean gender) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
