@@ -17,6 +17,13 @@ public class User {
 
     }
 
+    public User(String name, String email, String phone, boolean gender) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.gender = gender;
+    }
+
     public User(String id, String name, String email, String phone, String avatar, boolean gender) {
         this.id = id;
         this.name = name;
