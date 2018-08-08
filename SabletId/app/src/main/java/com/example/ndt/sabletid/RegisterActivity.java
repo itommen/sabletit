@@ -61,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                 Toast.makeText(RegisterActivity.this, "Your account has been created successfully",
                                                         Toast.LENGTH_LONG).show();
 
-                                                Intent goToNextActivity = new Intent(getApplicationContext(), MainActivity.class);
+                                                Intent goToNextActivity = new Intent(getApplicationContext(), UserDetailsActivity.class);
                                                 startActivity(goToNextActivity);
                                             }
                                             else {

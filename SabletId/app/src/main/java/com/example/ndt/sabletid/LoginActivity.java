@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
                                 findViewById(R.id.loginIndeterminateBar).setVisibility(View.GONE);
                                 if (task.isSuccessful())
                                 {
-                                    Intent goToNextActivity = new Intent(getApplicationContext(), MainActivity.class);
+                                    Intent goToNextActivity = new Intent(getApplicationContext(), UserDetailsActivity.class);
                                     startActivity(goToNextActivity);
                                 }
                                 else {
