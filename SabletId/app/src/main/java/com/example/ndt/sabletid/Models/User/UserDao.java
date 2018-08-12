@@ -8,8 +8,6 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
-import com.example.ndt.sabletid.Models.User.User;
-
 @Dao
 public interface UserDao {
     @Query("SELECT * FROM user")

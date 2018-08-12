@@ -1,6 +1,7 @@
 package com.example.ndt.sabletid.Models.User;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -17,6 +18,7 @@ public class User {
 
     }
 
+    @Ignore
     public User(String name, String email, String phone, boolean gender) {
         this.name = name;
         this.email = email;
@@ -24,6 +26,7 @@ public class User {
         this.gender = gender;
     }
 
+    @Ignore
     public User(String id, String name, String email, String phone, String avatar, boolean gender) {
         this.id = id;
         this.name = name;
@@ -40,7 +43,6 @@ public class User {
     public void setId(String id) {
         this.id = id;
     }
-
 
     public String getName() {
         return name;

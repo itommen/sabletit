@@ -19,7 +19,7 @@ public class UserModel {
     }
 
     public void login(final String email, final String password, final LoginListener listener) {
-        userModelFirebase.loginWithEmailAndPassword(email, password, new UserModelFirebase.LoginCallback() {
+        userModelFirebase.loginWithEmailAndPassword(email, password, new UserModelFirebase.LoginListener() {
             @Override
             public void onSuccess() {
                 //userData = new UserData();
