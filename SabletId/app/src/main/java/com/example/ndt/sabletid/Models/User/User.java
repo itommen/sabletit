@@ -1,4 +1,4 @@
-package com.example.ndt.sabletid.Models;
+package com.example.ndt.sabletid.Models.User;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;

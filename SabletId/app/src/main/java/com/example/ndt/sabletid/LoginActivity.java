@@ -1,31 +1,26 @@
 package com.example.ndt.sabletid;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.ndt.sabletid.ViewModels.UserViewModel;
 
 public class LoginActivity extends AppCompatActivity {
-
+    private UserViewModel userViewModel;
     private EditText email, password;
-
-    private FirebaseAuth auth;
+    private String emailText, passwordText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
 
-        auth = FirebaseAuth.getInstance();
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
         findViewById(R.id.loginIndeterminateBar).setVisibility(View.INVISIBLE);
         email = findViewById(R.id.tbLoginEmail);
@@ -35,22 +30,29 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 findViewById(R.id.loginIndeterminateBar).setVisibility(View.VISIBLE);
-                auth.signInWithEmailAndPassword(email.getText().toString().trim(), password.getText().toString().trim())
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                findViewById(R.id.loginIndeterminateBar).setVisibility(View.GONE);
-                                if (task.isSuccessful())
-                                {
-                                    Intent goToNextActivity = new Intent(getApplicationContext(), UserDetailsActivity.class);
-                                    startActivity(goToNextActivity);
-                                }
-                                else {
-                                    Toast.makeText(LoginActivity.this, "Failed to login, please try again",
-                                            Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
+                emailText = email.getText().toString().trim();
+                passwordText = password.getText().toString().trim();
+
+                userViewModel.login(emailText, passwordText, new UserViewModel.LoginListener() {
+                    @Override
+                    public void onSuccess() {
+                        findViewById(R.id.loginIndeterminateBar).setVisibility(View.GONE);
+
+                        Toast.makeText(LoginActivity.this, "Welcome to SubletIt",
+                                Toast.LENGTH_LONG).show();
+
+                        Intent goToNextActivity = new Intent(getApplicationContext(), UserDetailsActivity.class);
+                        startActivity(goToNextActivity);
+                    }
+
+                    @Override
+                    public void onFailure(String exceptionMessage) {
+                        findViewById(R.id.loginIndeterminateBar).setVisibility(View.GONE);
+
+                        Toast.makeText(LoginActivity.this, "Failed to login, please try again",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 

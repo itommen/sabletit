@@ -5,6 +5,9 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.example.ndt.sabletid.Models.User.UserDao;
+import com.example.ndt.sabletid.Models.User.User;
+
 @Database(entities = {User.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
