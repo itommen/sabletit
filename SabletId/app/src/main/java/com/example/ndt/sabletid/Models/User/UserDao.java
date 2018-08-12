@@ -14,7 +14,7 @@ public interface UserDao {
     List<User> getAll();
 
     @Query("SELECT * FROM User where id LIKE :id")
-    User getByUserId(String id);
+    User getUserById(String id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(User... users);
