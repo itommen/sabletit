@@ -33,4 +33,29 @@ public class UserModel {
         });
     }
 
+    public interface RegisterListener {
+        void OnSuccess(User user);
+
+        void OnFailure(String errorMessage);
+    }
+
+    public void register(User user, String email, String password, final RegisterListener listener) {
+        userModelFirebase.createUserWithEmailAndPassword(user, email, password, new UserModelFirebase.RegisterListener(){
+
+            @Override
+            public void onSuccess(final User user) {
+                AsyncUserDao.insert(user, new AsyncUserDao.AsyncUserDaoListener<Boolean>() {
+                    @Override
+                    public void onComplete(Boolean data) {
+                        listener.OnSuccess(user);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                listener.OnFailure(errorMessage);
+            }
+        });
+    }
 }

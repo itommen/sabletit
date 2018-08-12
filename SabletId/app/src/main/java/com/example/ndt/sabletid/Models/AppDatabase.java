@@ -7,6 +7,7 @@ import android.content.Context;
 
 import com.example.ndt.sabletid.Models.User.UserDao;
 import com.example.ndt.sabletid.Models.User.User;
+import com.example.ndt.sabletid.SubletItApplication;
 
 @Database(entities = {User.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
@@ -17,10 +18,10 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static final Object sLock = new Object();
 
-    public static AppDatabase getInstance(Context context) {
+    public static AppDatabase getInstance() {
         synchronized (sLock) {
             if (instance == null) {
-                instance = Room.databaseBuilder(context.getApplicationContext(),
+                instance = Room.databaseBuilder(SubletItApplication.context,
                         AppDatabase.class, "subletit-database.db")
                         .fallbackToDestructiveMigration()
                         .build();
