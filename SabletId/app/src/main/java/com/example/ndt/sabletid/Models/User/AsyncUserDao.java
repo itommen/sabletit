@@ -36,7 +36,7 @@ public class AsyncUserDao {
         task.execute();
     }
 
-    static public void insert(final User user, final AsyncUserDaoListener<Boolean> listener) {
+    public static void insert(final User user, final AsyncUserDaoListener<Boolean> listener) {
         class UserAsyncTask extends AsyncTask<User, String, Boolean> {
             @Override
             protected Boolean doInBackground(User... users) {
@@ -58,7 +58,29 @@ public class AsyncUserDao {
         task.execute(user);
     }
 
-    static public void delete(final User user, final AsyncUserDaoListener<Boolean> listener) {
+    public static void update(final User user, final AsyncUserDaoListener<Boolean> listener) {
+        class UserAsyncTask extends AsyncTask<User, String, Boolean> {
+            @Override
+            protected Boolean doInBackground(User... users) {
+                if (users != null && users[0] != null) {
+                    AppDatabase.getInstance().userDao().update(users);
+                }
+
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                super.onPostExecute(success);
+                listener.onComplete(success);
+            }
+        }
+
+        UserAsyncTask task = new UserAsyncTask();
+        task.execute(user);
+    }
+
+    public static void delete(final User user, final AsyncUserDaoListener<Boolean> listener) {
         class UserAsyncTask extends AsyncTask<User, String, Boolean> {
 
             @Override

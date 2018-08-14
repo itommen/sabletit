@@ -41,6 +41,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         userViewModel.getConnectedUser().observe(UserDetailsActivity.this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable User user) {
+                firebaseUser = userViewModel.getFirebaseUser();
                 connectedUser = user;
 
                 if (user != null) {
@@ -61,7 +62,6 @@ public class UserDetailsActivity extends AppCompatActivity {
         findViewById(R.id.btnDeleteUser).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               firebaseUser = userViewModel.getFirebaseUser();
                userViewModel.deleteUser(firebaseUser, connectedUser, new UserViewModel.DeleteUserListener() {
                    @Override
                    public void onSuccess() {
@@ -78,6 +78,32 @@ public class UserDetailsActivity extends AppCompatActivity {
                                Toast.LENGTH_LONG).show();
                    }
                });
+            }
+        });
+
+        findViewById(R.id.btnUpdateUser).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User user = new User();
+                user.setId(connectedUser.getId());
+                user.setName(etUserName.getText().toString());
+                user.setEmail(etEmail.getText().toString());
+                user.setPhone(etPhone.getText().toString());
+                user.setGender(rbFemale.isChecked());
+
+                userViewModel.updateUser(firebaseUser, user, new UserViewModel.UpdateUserListener() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(UserDetailsActivity.this, "Your account has been updated successfully",
+                                Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        Toast.makeText(UserDetailsActivity.this, "Failed to update user, please try again",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
     }

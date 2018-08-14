@@ -142,4 +142,29 @@ public class UserModel {
             }
         });
     }
+
+    public interface UpdateUserListener {
+        void OnSuccess();
+
+        void OnFailure(String errorMessage);
+    }
+
+    public void updateUser(final FirebaseUser firebaseUser, final User user, final UpdateUserListener listener) {
+        userModelFirebase.updateUser(firebaseUser, user, new UserModelFirebase.UpdateUserListener(){
+            @Override
+            public void onSuccess() {
+                AsyncUserDao.update(user, new AsyncUserDao.AsyncUserDaoListener<Boolean>() {
+                    @Override
+                    public void onComplete(Boolean data) {
+                        listener.OnSuccess();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                listener.OnFailure(errorMessage);
+            }
+        });
+    }
 }

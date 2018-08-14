@@ -46,7 +46,6 @@ public class UserModelFirebase {
         });
     }
 
-
     public interface LoginListener {
         void onSuccess();
 
@@ -134,6 +133,37 @@ public class UserModelFirebase {
                 }
                 else {
                     listener.onSuccess();
+                }
+            }
+        });
+    }
+
+    public interface UpdateUserListener {
+        void onSuccess();
+
+        void onFailure(String errorMessage);
+    }
+
+    public void updateUser(final FirebaseUser firebaseUser, final User user, final UpdateUserListener listener) {
+        user.setId(null);
+        firebaseUser.updateEmail(user.getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    ref.child(firebaseUser.getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                listener.onSuccess();
+                            }
+                            else {
+                                listener.onFailure(task.getException().getMessage());
+                            }
+                        }
+                    });
+                }
+                else {
+                    listener.onFailure(task.getException().getMessage());
                 }
             }
         });

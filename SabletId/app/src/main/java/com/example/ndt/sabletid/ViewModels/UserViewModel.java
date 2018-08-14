@@ -71,6 +71,26 @@ public class UserViewModel extends ViewModel {
         });
     }
 
+    public interface UpdateUserListener {
+        void onSuccess();
+
+        void onFailure(String errorMessage);
+    }
+
+    public void updateUser(final FirebaseUser firebaseUser, final User user, final UpdateUserListener listener) {
+        UserModel.instance.updateUser(firebaseUser, user, new UserModel.UpdateUserListener() {
+            @Override
+            public void OnSuccess() {
+                listener.onSuccess();
+            }
+
+            @Override
+            public void OnFailure(String errorMessage) {
+                listener.onFailure(errorMessage);
+            }
+        });
+    }
+
     public LiveData<User> getConnectedUser() {
         data = UserModel.instance.getConnectedUser();
 
