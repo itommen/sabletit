@@ -76,4 +76,8 @@ public class UserViewModel extends ViewModel {
 
         return data;
     }
+
+    public FirebaseUser getFirebaseUser() {
+        return UserModel.instance.connectedFirebaseUser;
+    }
 }

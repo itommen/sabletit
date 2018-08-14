@@ -30,9 +30,9 @@ public class UserModelFirebase {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                user.setId(id);
 
                 if (user != null) {
+                    user.setId(id);
                     listener.onSuccess(user);
                 } else {
                     listener.onSuccess(null);

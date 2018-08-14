@@ -9,8 +9,8 @@ public class UserModel {
     public static UserModel instance = new UserModel();
 
     private UserModelFirebase userModelFirebase;
-    private FirebaseUser connectedFirebaseUser;
-    ConnectedUser connectedUser;
+    public FirebaseUser connectedFirebaseUser;
+    public ConnectedUser connectedUser;
 
     private UserModel() {
         userModelFirebase = new UserModelFirebase();

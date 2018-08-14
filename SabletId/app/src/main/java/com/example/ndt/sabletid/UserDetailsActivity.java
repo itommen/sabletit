@@ -61,7 +61,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         findViewById(R.id.btnDeleteUser).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firebaseUser =  FirebaseAuth.getInstance().getCurrentUser();
+               firebaseUser = userViewModel.getFirebaseUser();
                userViewModel.deleteUser(firebaseUser, connectedUser, new UserViewModel.DeleteUserListener() {
                    @Override
                    public void onSuccess() {
