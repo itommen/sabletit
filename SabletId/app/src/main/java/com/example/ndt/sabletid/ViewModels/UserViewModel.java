@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel;
 import com.example.ndt.sabletid.Models.User.User;
 import com.example.ndt.sabletid.Models.User.UserModel;
 import com.example.ndt.sabletid.Models.User.UserModelFirebase;
+import com.google.firebase.auth.FirebaseUser;
 
 public class UserViewModel extends ViewModel {
     LiveData<User> data;
@@ -48,5 +49,31 @@ public class UserViewModel extends ViewModel {
                 listener.onFailure(errorMessage);
             }
         });
+    }
+
+    public interface DeleteUserListener {
+        void onSuccess();
+
+        void onFailure(String errorMessage);
+    }
+
+    public void deleteUser(final FirebaseUser firebaseUser, final User user, final DeleteUserListener listener) {
+        UserModel.instance.deleteUser(firebaseUser, user, new UserModel.DeleteUserListener() {
+            @Override
+            public void OnSuccess() {
+                listener.onSuccess();
+            }
+
+            @Override
+            public void OnFailure(String errorMessage) {
+                listener.onFailure(errorMessage);
+            }
+        });
+    }
+
+    public LiveData<User> getConnectedUser() {
+        data = UserModel.instance.getConnectedUser();
+
+        return data;
     }
 }

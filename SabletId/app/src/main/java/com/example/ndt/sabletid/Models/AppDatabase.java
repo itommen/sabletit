@@ -22,7 +22,7 @@ public abstract class AppDatabase extends RoomDatabase {
         synchronized (sLock) {
             if (instance == null) {
                 instance = Room.databaseBuilder(SubletItApplication.context,
-                        AppDatabase.class, "subletit-database.db")
+                        AppDatabase.class, "database.db")
                         .fallbackToDestructiveMigration()
                         .build();
             }

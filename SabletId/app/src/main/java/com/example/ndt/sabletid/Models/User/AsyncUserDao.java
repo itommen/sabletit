@@ -41,12 +41,30 @@ public class AsyncUserDao {
             @Override
             protected Boolean doInBackground(User... users) {
                 if (users != null && users[0] != null) {
-                    try {
-                        AppDatabase.getInstance().userDao().insertAll(users);
-                    }
-                    catch (Exception ex) {
-                        return false;
-                    }
+                    AppDatabase.getInstance().userDao().insertAll(users);
+                }
+
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                super.onPostExecute(success);
+                listener.onComplete(success);
+            }
+        }
+
+        UserAsyncTask task = new UserAsyncTask();
+        task.execute(user);
+    }
+
+    static public void delete(final User user, final AsyncUserDaoListener<Boolean> listener) {
+        class UserAsyncTask extends AsyncTask<User, String, Boolean> {
+
+            @Override
+            protected Boolean doInBackground(User... users) {
+                if (users != null && users[0] != null) {
+                    AppDatabase.getInstance().userDao().delete(users[0]);
                 }
 
                 return true;
