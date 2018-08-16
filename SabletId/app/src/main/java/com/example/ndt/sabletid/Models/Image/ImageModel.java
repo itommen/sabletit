@@ -1,0 +1,123 @@
+package com.example.ndt.sabletid.Models.Image;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.util.Log;
+import android.webkit.URLUtil;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+public class ImageModel {
+    public static ImageModel instance = new ImageModel();
+
+    private ImageModelFirebase imageModelFirebase;
+
+    private ImageModel() {
+        imageModelFirebase = new ImageModelFirebase();
+    }
+
+    public interface SaveImageListener {
+        void onDone(String url);
+
+        void onFailure(String errorMessage);
+    }
+
+    public interface GetImageListener {
+        void onDone(Bitmap imageBitmap);
+    }
+    public void saveImage(Bitmap imageBitmap, final SaveImageListener listener) {
+        imageModelFirebase.saveImage(imageBitmap, new ImageModelFirebase.SaveImageListener() {
+            @Override
+            public void onDone(String url) {
+                listener.onDone(url);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                listener.onDone(errorMessage);
+            }
+        });
+    }
+
+    public void getImage(final String url, final GetImageListener listener) {
+        String localFileName = URLUtil.guessFileName(url, null, null);
+        final Bitmap image = loadImageFromFile(localFileName);
+        if (image == null) {
+            imageModelFirebase.getImage(url, new GetImageListener() {
+                @Override
+                public void onDone(Bitmap imageBitmap) {
+                    if (imageBitmap == null) {
+                        listener.onDone(null);
+                    } else {
+
+                        String localFileName = URLUtil.guessFileName(url, null, null);
+                        Log.d("TAG", "save image to cache: " + localFileName);
+                        saveImageToFile(imageBitmap, localFileName);
+
+                        listener.onDone(imageBitmap);
+                    }
+                }
+            });
+        } else {
+            Log.d("TAG", "OK reading cache image: " + localFileName);
+            listener.onDone(image);
+        }
+    }
+
+    public void saveImageToFile(Bitmap imageBitmap, String imageFileName) {
+        if (imageBitmap == null) return;
+        try {
+            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
+            File imageFile = new File(dir, imageFileName);
+            imageFile.createNewFile();
+
+            OutputStream out = new FileOutputStream(imageFile);
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Bitmap loadImageFromFile(String imageFileName) {
+        Bitmap bitmap = null;
+        try {
+            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            File imageFile = new File(dir, imageFileName);
+            InputStream inputStream = new FileInputStream(imageFile);
+            bitmap = BitmapFactory.decodeStream(inputStream);
+            Log.d("tag", "got image from cache: " + imageFileName);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
+    public void DeleteImage(String p_strUrl)
+    {
+        File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File fdelete = new File(dir, p_strUrl);
+        if (fdelete.exists()) {
+            if (fdelete.delete()) {
+                System.out.println("file Deleted :" + p_strUrl);
+            } else {
+                System.out.println("file not Deleted :" + p_strUrl);
+            }
+        }
+    }
+}
