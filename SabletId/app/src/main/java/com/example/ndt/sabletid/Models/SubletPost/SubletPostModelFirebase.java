@@ -17,6 +17,8 @@ public class SubletPostModelFirebase {
     private DatabaseReference ref = FirebaseDatabase.getInstance().getReference("subletPosts");
 
     private ValueEventListener getAllPostsEventListener;
+    private ValueEventListener getPostByIdEventListener;
+    private ValueEventListener getPostsByUserIdEventListener;
 
     public interface AddPostListener {
         void onSuccess();
@@ -37,6 +39,14 @@ public class SubletPostModelFirebase {
     }
 
     public interface GetAllSubletPostsListener {
+        void onSuccess(List<SubletPost> subletPosts);
+    }
+
+    public interface GetSubletPostByIdListener {
+        void onSuccess(SubletPost post);
+    }
+
+    public interface GetSubletPostsByUserIdListener {
         void onSuccess(List<SubletPost> subletPosts);
     }
 
@@ -106,4 +116,57 @@ public class SubletPostModelFirebase {
             ref.removeEventListener(getAllPostsEventListener);
         }
     }
+
+    public void getSubletPostsByUserId(final String userId, final GetSubletPostsByUserIdListener listener) {
+        getPostsByUserIdEventListener = ref.orderByChild("userId").equalTo(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<SubletPost> posts = new LinkedList<>();
+                for (DataSnapshot stSnapshot : dataSnapshot.getChildren()) {
+                    SubletPost currentSubletPost = stSnapshot.getValue(SubletPost.class);
+                    posts.add(currentSubletPost);
+                }
+
+                listener.onSuccess(posts);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    public void cancelGetSubletPostsByUserId() {
+        if (getPostsByUserIdEventListener != null) {
+            ref.removeEventListener(getPostsByUserIdEventListener);
+        }
+    }
+
+    public void getPostById(final String postId, final GetSubletPostByIdListener listener) {
+        getPostByIdEventListener = ref.child(postId).addValueEventListener(new ValueEventListener(){
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                SubletPost post = dataSnapshot.getValue(SubletPost.class);
+
+                if (post != null) {
+                    listener.onSuccess(post);
+                } else {
+                    listener.onSuccess(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void cancelGetPostById() {
+        if (getPostByIdEventListener != null) {
+            ref.removeEventListener(getPostByIdEventListener);
+        }
+    }
+
+    // TODO: ADD getallsubletpostsbyuserid
 }
