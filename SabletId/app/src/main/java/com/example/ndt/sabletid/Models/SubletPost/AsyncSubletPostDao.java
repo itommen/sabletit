@@ -70,16 +70,19 @@ public class AsyncSubletPostDao {
         task.execute();
     }
 
-    public static void insert(final SubletPost subletPost, final AsyncSubletPostDao.AsyncSubletPostDaoListener<Boolean> listener) {
-        class SubletPostAsyncTask extends AsyncTask<SubletPost, String, Boolean> {
+    public static void insert(final List<SubletPost> posts, final AsyncSubletPostDao.AsyncSubletPostDaoListener<Boolean> listener) {
+        class SubletPostAsyncTask extends AsyncTask<List<SubletPost>, String, Boolean> {
             @Override
-            protected Boolean doInBackground(SubletPost... subletPosts) {
-                if (subletPosts != null && subletPosts[0] != null) {
-                    AppDatabase.getInstance().subletPostDao().insertAll(subletPosts);
+            protected Boolean doInBackground(List<SubletPost>... subletPosts) {
+                if (subletPosts != null) {
+                    for (SubletPost sp:subletPosts[0]) {
+                        AppDatabase.getInstance().subletPostDao().insertAll(sp);
+                    }
                 }
 
                 return true;
             }
+
 
             @Override
             protected void onPostExecute(Boolean success) {
@@ -89,7 +92,7 @@ public class AsyncSubletPostDao {
         }
 
         SubletPostAsyncTask task = new SubletPostAsyncTask();
-        task.execute(subletPost);
+        task.execute(posts);
     }
 
     public static void update(final SubletPost subletPost, final AsyncSubletPostDao.AsyncSubletPostDaoListener<Boolean> listener) {

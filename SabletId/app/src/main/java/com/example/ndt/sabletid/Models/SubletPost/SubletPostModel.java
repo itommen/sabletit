@@ -1,9 +1,16 @@
 package com.example.ndt.sabletid.Models.SubletPost;
 
-public class SubletPostModel {
-    public static SubletPostModel instance = new SubletPostModel();
+import android.arch.lifecycle.MutableLiveData;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+public class SubletPostModel {
     private SubletPostModelFirebase subletPostModelFirebase;
+
+    public static SubletPostModel instance = new SubletPostModel();
+    public SubletPostList subletPostList = new SubletPostList();
 
     private SubletPostModel() {
         subletPostModelFirebase = new SubletPostModelFirebase();
@@ -68,9 +75,10 @@ public class SubletPostModel {
 
     public void addSubletPost(final SubletPost subletPost, final AddSubletPostListener listener) {
         subletPostModelFirebase.addSubletPost(subletPost, new SubletPostModelFirebase.AddPostListener() {
+
             @Override
             public void onSuccess() {
-                AsyncSubletPostDao.insert(subletPost, new AsyncSubletPostDao.AsyncSubletPostDaoListener<Boolean>() {
+                AsyncSubletPostDao.insert(Arrays.asList(subletPost), new AsyncSubletPostDao.AsyncSubletPostDaoListener<Boolean>() {
                     @Override
                     public void onComplete(Boolean data) {
                         listener.OnSuccess(subletPost);
@@ -84,4 +92,46 @@ public class SubletPostModel {
             }
         });
     }
+
+    public class SubletPostList extends MutableLiveData<List<SubletPost>> {
+        @Override
+        protected void onActive() {
+            super.onActive();
+
+            AsyncSubletPostDao.getAll(new AsyncSubletPostDao.AsyncSubletPostDaoListener<List<SubletPost>>() {
+                @Override
+                public void onComplete(List<SubletPost> data) {
+                    setValue(data);
+
+                    subletPostModelFirebase.getAllSubletPosts(new SubletPostModelFirebase.GetAllSubletPostsListener() {
+                        @Override
+                        public void onSuccess(List<SubletPost> subletPosts) {
+                            setValue(subletPosts);
+
+                            AsyncSubletPostDao.insert(subletPosts, new AsyncSubletPostDao.AsyncSubletPostDaoListener<Boolean>() {
+                                @Override
+                                public void onComplete(Boolean data) {
+
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        @Override
+        protected void onInactive() {
+            super.onInactive();
+        }
+
+        public SubletPostList() {
+            super();
+
+            setValue(new LinkedList<SubletPost>());
+        }
+    }
+
+
+
 }
