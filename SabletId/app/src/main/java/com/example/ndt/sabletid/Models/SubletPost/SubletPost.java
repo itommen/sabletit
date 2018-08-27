@@ -16,31 +16,42 @@ public class SubletPost {
     private String startDate;
     private String endDate;
     private String city;
-    private String placeId;
+    private String photo;
+    private int cost;
+    private double latitude;
+    private double longitude;
 
     public SubletPost() {
 
     }
 
     @Ignore
-    public SubletPost(String userId, String description, String startDate, String endDate, String city, String placeId, String photo) {
+    public SubletPost(String userId, String description, String startDate, String endDate, String city, String photo,
+                      int cost, double latitude, double longitude) {
         this.userId = userId;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.city = city;
-        this.placeId = placeId;
+        this.photo = photo;
+        this.cost = cost;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     @Ignore
-    public SubletPost(String id, String userId, String description, String startDate, String endDate, String city, String placeId, String photo) {
+    public SubletPost(@NonNull String id, String userId, String description, String startDate, String endDate, String city, String photo,
+                      int cost, double latitude, double longitude) {
         this.id = id;
         this.userId = userId;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.city = city;
-        this.placeId = placeId;
+        this.photo = photo;
+        this.cost = cost;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     @NonNull
@@ -92,11 +103,35 @@ public class SubletPost {
         this.city = city;
     }
 
-    public String getPlaceId() {
-        return placeId;
+    public int getCost() {
+        return cost;
     }
 
-    public void setPlaceId(String placeId) {
-        this.placeId = placeId;
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

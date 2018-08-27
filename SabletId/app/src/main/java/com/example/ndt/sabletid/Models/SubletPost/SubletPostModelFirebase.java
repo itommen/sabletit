@@ -167,6 +167,4 @@ public class SubletPostModelFirebase {
             ref.removeEventListener(getPostByIdEventListener);
         }
     }
-
-    // TODO: ADD getallsubletpostsbyuserid
 }
