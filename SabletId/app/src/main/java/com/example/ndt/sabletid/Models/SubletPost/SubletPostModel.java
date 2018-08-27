@@ -10,7 +10,10 @@ public class SubletPostModel {
     private SubletPostModelFirebase subletPostModelFirebase;
 
     public static SubletPostModel instance = new SubletPostModel();
+
     public SubletPostList subletPostList = new SubletPostList();
+    public SubletPostsByUserIdList subletPostsByUserIdList = new SubletPostsByUserIdList();
+    public SubletPostById subletPostById = new SubletPostById();
 
     private SubletPostModel() {
         subletPostModelFirebase = new SubletPostModelFirebase();
@@ -94,6 +97,12 @@ public class SubletPostModel {
     }
 
     public class SubletPostList extends MutableLiveData<List<SubletPost>> {
+        public SubletPostList() {
+            super();
+
+            setValue(new LinkedList<SubletPost>());
+        }
+
         @Override
         protected void onActive() {
             super.onActive();
@@ -124,14 +133,93 @@ public class SubletPostModel {
         protected void onInactive() {
             super.onInactive();
         }
+    }
 
-        public SubletPostList() {
+    public class SubletPostsByUserIdList extends MutableLiveData<List<SubletPost>> {
+        String userId = "";
+
+        public SubletPostsByUserIdList() {
             super();
 
             setValue(new LinkedList<SubletPost>());
         }
+
+        public void InitUserId(String userId) {
+            this.userId = userId;
+        }
+
+        @Override
+        protected void onActive() {
+            AsyncSubletPostDao.getSubletPostsByUserId(userId, new AsyncSubletPostDao.AsyncSubletPostDaoListener<List<SubletPost>>() {
+                @Override
+                public void onComplete(List<SubletPost> data) {
+                    setValue(data);
+                    subletPostModelFirebase.getSubletPostsByUserId(userId, new SubletPostModelFirebase.GetSubletPostsByUserIdListener() {
+                        @Override
+                        public void onSuccess(List<SubletPost> subletPosts) {
+                            setValue(subletPosts);
+                        }
+                    });
+                }
+            });
+        }
+
+        @Override
+        protected void onInactive() {
+            super.onInactive();
+        }
     }
 
+    public void InitUserId(String userId) {
+        if (subletPostsByUserIdList == null) {
+            subletPostsByUserIdList = new SubletPostsByUserIdList();
+        }
 
+        subletPostsByUserIdList.InitUserId(userId);
+    }
 
+    public class SubletPostById extends MutableLiveData<SubletPost> {
+        String subletPostId = "";
+
+        public SubletPostById() {
+            super();
+            setValue(new SubletPost());
+        }
+
+        public void InitSubletPostId(String subletPostId) {
+            this.subletPostId = subletPostId;
+        }
+
+        @Override
+        protected void onActive() {
+            super.onActive();
+
+            AsyncSubletPostDao.getSubletPostById(subletPostId, new AsyncSubletPostDao.AsyncSubletPostDaoListener<SubletPost>() {
+                @Override
+                public void onComplete(SubletPost data) {
+                    setValue(data);
+
+                    subletPostModelFirebase.getPostById(subletPostId, new SubletPostModelFirebase.GetSubletPostByIdListener() {
+                        @Override
+                        public void onSuccess(SubletPost post) {
+                            setValue(post);
+                        }
+                    });
+                }
+            });
+        }
+
+        @Override
+        protected void onInactive() {
+            super.onInactive();
+        }
+    }
+
+    public void InitSubletPostId(String subletPostId) {
+        if (subletPostById == null) {
+            subletPostById = new SubletPostById();
+        }
+
+        subletPostById.InitSubletPostId(subletPostId);
+    }
 }

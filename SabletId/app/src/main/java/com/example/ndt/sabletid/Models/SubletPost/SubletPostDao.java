@@ -19,6 +19,9 @@ public interface SubletPostDao {
     @Query("SELECT * FROM SubletPost where userId LIKE :userId")
     List<SubletPost> getSubletPostsByUserId(String userId);
 
+    @Query("SELECT * FROM SubletPost where id LIKE :id")
+    SubletPost getSubletPostById(String id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(SubletPost... subletPosts);
 

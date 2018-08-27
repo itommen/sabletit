@@ -70,6 +70,31 @@ public class AsyncSubletPostDao {
         task.execute();
     }
 
+    public static void getSubletPostById(final String subletPostId, final AsyncSubletPostDaoListener<SubletPost> listener) {
+        class SubletPostAsyncTask extends AsyncTask<String, String, SubletPost> {
+            @Override
+            protected SubletPost doInBackground(String... strings) {
+                SubletPost post = new SubletPost();
+                SubletPostDao dao = AppDatabase.getInstance().subletPostDao();
+
+                if (dao != null) {
+                    post = dao.getSubletPostById(subletPostId);
+                }
+
+                return post;
+            }
+
+            @Override
+            protected void onPostExecute(SubletPost subletPost) {
+                super.onPostExecute(subletPost);
+                listener.onComplete(subletPost);
+            }
+        }
+
+        SubletPostAsyncTask task = new SubletPostAsyncTask();
+        task.execute();
+    }
+
     public static void insert(final List<SubletPost> posts, final AsyncSubletPostDao.AsyncSubletPostDaoListener<Boolean> listener) {
         class SubletPostAsyncTask extends AsyncTask<List<SubletPost>, String, Boolean> {
             @Override
