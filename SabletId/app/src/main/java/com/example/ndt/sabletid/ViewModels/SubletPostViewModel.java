@@ -1,6 +1,5 @@
 package com.example.ndt.sabletid.ViewModels;
 
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 

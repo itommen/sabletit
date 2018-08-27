@@ -1,6 +1,5 @@
 package com.example.ndt.sabletid.Models.User;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;

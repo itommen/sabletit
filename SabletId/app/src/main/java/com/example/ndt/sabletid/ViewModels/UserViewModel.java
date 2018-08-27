@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModel;
 
 import com.example.ndt.sabletid.Models.User.User;
 import com.example.ndt.sabletid.Models.User.UserModel;
-import com.example.ndt.sabletid.Models.User.UserModelFirebase;
 import com.google.firebase.auth.FirebaseUser;
 
 public class UserViewModel extends ViewModel {

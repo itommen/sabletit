@@ -17,12 +17,7 @@ import android.widget.Toast;
 import com.example.ndt.sabletid.Models.Image.ImageModel;
 import com.example.ndt.sabletid.Models.User.User;
 import com.example.ndt.sabletid.ViewModels.UserViewModel;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class UserDetailsActivity extends AppCompatActivity {
     private static final String ARG_NAME = "ARG_NAME";
