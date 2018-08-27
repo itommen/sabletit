@@ -1,5 +1,6 @@
 package com.example.ndt.sabletid.Models.SubletPost;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import java.util.Arrays;
@@ -135,6 +136,10 @@ public class SubletPostModel {
         }
     }
 
+    public LiveData<List<SubletPost>> getAllSubletPosts() {
+        return subletPostList;
+    }
+
     public class SubletPostsByUserIdList extends MutableLiveData<List<SubletPost>> {
         String userId = "";
 
@@ -176,6 +181,10 @@ public class SubletPostModel {
         }
 
         subletPostsByUserIdList.InitUserId(userId);
+    }
+
+    public LiveData<List<SubletPost>> getAllSubletPostsByUserId() {
+        return subletPostsByUserIdList;
     }
 
     public class SubletPostById extends MutableLiveData<SubletPost> {
@@ -221,5 +230,9 @@ public class SubletPostModel {
         }
 
         subletPostById.InitSubletPostId(subletPostId);
+    }
+
+    public LiveData<SubletPost> getSubletPostById() {
+        return subletPostById;
     }
 }
