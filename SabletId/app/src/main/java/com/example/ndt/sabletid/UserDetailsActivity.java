@@ -1,5 +1,7 @@
 package com.example.ndt.sabletid;
 
+import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -9,7 +11,9 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRadioButton;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -19,7 +23,7 @@ import com.example.ndt.sabletid.Models.User.User;
 import com.example.ndt.sabletid.ViewModels.UserViewModel;
 import com.google.firebase.auth.FirebaseUser;
 
-public class UserDetailsActivity extends AppCompatActivity {
+public class UserDetailsActivity extends Fragment {
     private static final String ARG_NAME = "ARG_NAME";
     private static final String ARG_EMAIL = "ARG_EMAIL";
     private static final String ARG_PHONE = "ARG_PHONE";
@@ -45,18 +49,24 @@ public class UserDetailsActivity extends AppCompatActivity {
     String avatarUrl;
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_details);
+
+        if(savedInstanceState != null) {
+            onRestoreInstanceState(savedInstanceState);
+        }
+
+        final View view = inflater.inflate(R.layout.activity_user_details, container, false);
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
-        etUserName = findViewById(R.id.etUserNameUserDetails);
-        etEmail = findViewById(R.id.etEmailUserDetails);
-        etPhone = findViewById(R.id.etPhoneUserDetails);
-        rbMale = findViewById(R.id.radioRegisterMale);
-        rbFemale = findViewById(R.id.radioRegisterFemale);
-        ivImage = findViewById(R.id.ivImage);
+        etUserName = view.findViewById(R.id.etUserNameUserDetails);
+        etEmail = view.findViewById(R.id.etEmailUserDetails);
+        etPhone = view.findViewById(R.id.etPhoneUserDetails);
+        rbMale = view.findViewById(R.id.radioRegisterMale);
+        rbFemale = view.findViewById(R.id.radioRegisterFemale);
+        ivImage = view.findViewById(R.id.ivImage);
 
         userViewModel.getConnectedUser().observe(UserDetailsActivity.this, new Observer<User>() {
             @Override
@@ -91,29 +101,30 @@ public class UserDetailsActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.btnDeleteUser).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnDeleteUser).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                userViewModel.deleteUser(firebaseUser, connectedUser, new UserViewModel.DeleteUserListener() {
                    @Override
                    public void onSuccess() {
-                       Toast.makeText(UserDetailsActivity.this, "Your account has been deleted successfully",
+                       Toast.makeText(view.getContext(), "Your account has been deleted successfully",
                                Toast.LENGTH_LONG).show();
 
-                       Intent goToNextActivity = new Intent(getApplicationContext(), LoginActivity.class);
-                       startActivity(goToNextActivity);
+                       // TODO: Complete
+//                       Intent goToNextActivity = new Intent(getApplicationContext(), LoginActivity.class);
+//                       startActivity(goToNextActivity);
                    }
 
                    @Override
                    public void onFailure(String errorMessage) {
-                       Toast.makeText(UserDetailsActivity.this, "Failed to delete user, please try again",
+                       Toast.makeText(view.getContext(), "Failed to delete user, please try again",
                                Toast.LENGTH_LONG).show();
                    }
                });
             }
         });
 
-        findViewById(R.id.btnUpdateUser).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnUpdateUser).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final User user = new User();
@@ -135,7 +146,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(String errorMessage) {
-                            Toast.makeText(UserDetailsActivity.this, "Failed to update user, please try again",
+                            Toast.makeText(view.getContext(), "Failed to update user, please try again",
                                     Toast.LENGTH_LONG).show();
                         }
                     });
@@ -155,29 +166,31 @@ public class UserDetailsActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.btnEditImage).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnEditImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent takePictureIntent = new Intent(
                         MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                 }
             }
         });
+
+        return view;
     }
 
     public void updateUser(FirebaseUser firebaseUser, User user) {
         userViewModel.updateUser(firebaseUser, user, new UserViewModel.UpdateUserListener() {
             @Override
             public void onSuccess() {
-                Toast.makeText(UserDetailsActivity.this, "Your account has been updated successfully",
+                Toast.makeText(getView().getContext(), "Your account has been updated successfully",
                         Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(String errorMessage) {
-                Toast.makeText(UserDetailsActivity.this, "Failed to update user, please try again",
+                Toast.makeText(getView().getContext(), "Failed to update user, please try again",
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -187,7 +200,7 @@ public class UserDetailsActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE &&
-                resultCode == RESULT_OK) {
+                resultCode == Activity.RESULT_OK) {
             Bundle extras = data.getExtras();
             imageBitmap = (Bitmap) extras.get("data");
             ivImage.setImageBitmap(imageBitmap);
@@ -196,7 +209,6 @@ public class UserDetailsActivity extends AppCompatActivity {
         }
     }
 
-    @Override
     public void onRestoreInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
 
