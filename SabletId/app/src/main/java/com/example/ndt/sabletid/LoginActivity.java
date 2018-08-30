@@ -68,13 +68,13 @@ public class LoginActivity extends Fragment {
         view.findViewById(R.id.btnMoveRegister).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Fragment newFragment = new RegisterActivity();
-//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//
-//                transaction.replace(R.id.content_frame, newFragment);
-//                transaction.addToBackStack(null);
-//
-//                transaction.commit();
+                Fragment newFragment = new RegisterActivity();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                transaction.replace(R.id.content_frame, newFragment);
+                transaction.addToBackStack(null);
+
+                transaction.commit();
             }
         });
 

@@ -2,9 +2,13 @@ package com.example.ndt.sabletid;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
@@ -12,28 +16,31 @@ import android.widget.Toast;
 import com.example.ndt.sabletid.Models.User.User;
 import com.example.ndt.sabletid.ViewModels.UserViewModel;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends Fragment {
     private UserViewModel userViewModel;
     private EditText email, password, name, phoneNumber;
     private Boolean gender;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+
+        final View view = inflater.inflate(R.layout.activity_register, container, false);
+
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
-        findViewById(R.id.registerIndeterminateBar).setVisibility(View.INVISIBLE);
-        email = findViewById(R.id.etRegisterEmail);
-        password = findViewById(R.id.etRegisterPassword);
-        name = findViewById(R.id.etRegisterName);
-        phoneNumber = findViewById(R.id.etRegisterPhone);
+        view.findViewById(R.id.registerIndeterminateBar).setVisibility(View.INVISIBLE);
+        email = view.findViewById(R.id.etRegisterEmail);
+        password = view.findViewById(R.id.etRegisterPassword);
+        name = view.findViewById(R.id.etRegisterName);
+        phoneNumber = view.findViewById(R.id.etRegisterPhone);
         gender = false;
 
-        findViewById(R.id.btnRegister).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnRegister).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findViewById(R.id.registerIndeterminateBar).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.registerIndeterminateBar).setVisibility(View.VISIBLE);
 
                 String emailText = email.getText().toString().trim();
                 String nameText = name.getText().toString().trim();
@@ -48,20 +55,25 @@ public class RegisterActivity extends AppCompatActivity {
                 userViewModel.registerUser(user, emailText, passwordText, new UserViewModel.RegisterListener() {
                     @Override
                     public void onSuccess(User user) {
-                        findViewById(R.id.registerIndeterminateBar).setVisibility(View.GONE);
+                        view.findViewById(R.id.registerIndeterminateBar).setVisibility(View.GONE);
 
-                        Toast.makeText(RegisterActivity.this, "Your account has been created successfully",
+                        Toast.makeText(view.getContext(), "Your account has been created successfully",
                                 Toast.LENGTH_LONG).show();
 
-                        Intent goToNextActivity = new Intent(getApplicationContext(), UserDetailsActivity.class);
-                        startActivity(goToNextActivity);
+                        Fragment newFragment = new UserDetailsActivity();
+                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                        transaction.replace(R.id.content_frame, newFragment);
+                        transaction.addToBackStack(null);
+
+                        transaction.commit();
                     }
 
                     @Override
                     public void onFailure(String errorMessage) {
-                        findViewById(R.id.registerIndeterminateBar).setVisibility(View.GONE);
+                        view.findViewById(R.id.registerIndeterminateBar).setVisibility(View.GONE);
 
-                        Toast.makeText(RegisterActivity.this, "Failed to register, please try again",
+                        Toast.makeText(view.getContext(), "Failed to register, please try again",
                                 Toast.LENGTH_LONG).show();
 
                     }
@@ -69,13 +81,34 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.btnMoveLogin).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnMoveLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent goToNextActivity = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(goToNextActivity);
+                Fragment newFragment = new LoginActivity();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                transaction.replace(R.id.content_frame, newFragment);
+                transaction.addToBackStack(null);
+
+                transaction.commit();
             }
         });
+
+        view.findViewById(R.id.radioRegisterMale).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
+            }
+        });
+
+        view.findViewById(R.id.radioRegisterFemale).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
+            }
+        });
+
+        return view;
     }
 
 
