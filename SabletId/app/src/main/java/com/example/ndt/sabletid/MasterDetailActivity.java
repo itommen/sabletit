@@ -1,6 +1,9 @@
 package com.example.ndt.sabletid;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,12 +14,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.example.ndt.sabletid.Models.User.User;
+import com.example.ndt.sabletid.ViewModels.UserViewModel;
+
 public class MasterDetailActivity extends AppCompatActivity {
+    private UserViewModel userViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_detail);
+
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -24,14 +33,20 @@ public class MasterDetailActivity extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        // TODO: Check if logged, then move to main
-        Fragment newFragment = new LoginFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        userViewModel.getConnectedUser().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(@Nullable final User user) {
+                Fragment newFragment = user == null
+                        ? new LoginFragment()
+                        : new UserDetailsFragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        transaction.replace(R.id.content_frame, newFragment);
-        transaction.addToBackStack(null);
+                transaction.replace(R.id.content_frame, newFragment);
+                transaction.addToBackStack(null);
 
-        transaction.commit();
+                transaction.commit();
+            }
+        });
 
         final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
@@ -41,7 +56,7 @@ public class MasterDetailActivity extends AppCompatActivity {
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
-                        ((DrawerLayout)findViewById(R.id.drawer_layout)).closeDrawers();
+                        ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawers();
 
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
@@ -55,7 +70,7 @@ public class MasterDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                ((DrawerLayout)findViewById(R.id.drawer_layout)).openDrawer(GravityCompat.START);
+                ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(GravityCompat.START);
                 return true;
         }
         return super.onOptionsItemSelected(item);
