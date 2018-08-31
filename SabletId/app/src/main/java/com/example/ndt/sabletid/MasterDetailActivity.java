@@ -16,6 +16,7 @@ import android.view.MenuItem;
 
 import com.example.ndt.sabletid.Models.User.User;
 import com.example.ndt.sabletid.ViewModels.UserViewModel;
+import com.google.android.gms.maps.SupportMapFragment;
 
 public class MasterDetailActivity extends AppCompatActivity {
     private UserViewModel userViewModel;
@@ -91,6 +92,11 @@ public class MasterDetailActivity extends AppCompatActivity {
 
                             case R.id.menu_create_sublet: {
                                 newFragment = new CreateNewSubletPostFragment();
+                                break;
+                            }
+
+                            case R.id.menu_map: {
+                                newFragment = new MapsActivity();
                                 break;
                             }
                         }

@@ -4,4 +4,6 @@
     <string name="Register">Register</string>
     <string name="edit_details">Edit Details</string>
     <string name="create_sublet">Create Sublet</string>
+    <string name="map">Map</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

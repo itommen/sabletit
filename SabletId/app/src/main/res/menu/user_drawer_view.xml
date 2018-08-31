@@ -10,5 +10,10 @@
             android:id="@+id/menu_create_sublet"
             android:icon="@drawable/ic_launcher"
             android:title="@string/create_sublet" />
+
+        <item
+            android:id="@+id/menu_map"
+            android:icon="@drawable/ic_launcher"
+            android:title="@string/map" />
     </group>
 </menu>
