@@ -11,7 +11,7 @@ import com.example.ndt.sabletid.Models.User.UserDao;
 import com.example.ndt.sabletid.Models.User.User;
 import com.example.ndt.sabletid.SubletItApplication;
 
-@Database(entities = {User.class, SubletPost.class}, version = 1)
+@Database(entities = {User.class, SubletPost.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
