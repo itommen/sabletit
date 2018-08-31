@@ -71,8 +71,38 @@ public class MasterDetailActivity extends AppCompatActivity {
                         // close drawer when item is tapped
                         ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawers();
 
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
+                        Fragment newFragment = null;
+
+                        switch (menuItem.getItemId()) {
+                            case R.id.menu_login: {
+                                newFragment = new LoginFragment();
+                                break;
+                            }
+
+                            case R.id.menu_register: {
+                                newFragment = new RegisterFragment();
+                                break;
+                            }
+
+                            case R.id.menu_edit_details: {
+                                newFragment = new UserDetailsFragment();
+                                break;
+                            }
+
+                            case R.id.menu_create_sablet: {
+                                newFragment = new CreateNewSubletPostFragment();
+                                break;
+                            }
+                        }
+
+                        if(newFragment != null) {
+                            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                            transaction.replace(R.id.content_frame, newFragment);
+                            transaction.addToBackStack(null);
+
+                            transaction.commit();
+                        }
 
                         return true;
                     }

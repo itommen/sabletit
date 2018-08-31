@@ -2,8 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/menu_edit_details"
             android:icon="@drawable/ic_launcher"
-            android:title="test2" />
+            android:title="@string/edit_details" />
+
+        <item
+            android:id="@+id/menu_create_sablet"
+            android:icon="@drawable/ic_launcher"
+            android:title="@string/create_sablet" />
     </group>
 </menu>
