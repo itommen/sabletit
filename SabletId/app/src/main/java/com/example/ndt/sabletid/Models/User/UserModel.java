@@ -92,6 +92,10 @@ public class UserModel {
         });
     }
 
+    public void logout() {
+        userModelFirebase.logout();
+    }
+
     public interface RegisterListener {
         void OnSuccess(User user);
 

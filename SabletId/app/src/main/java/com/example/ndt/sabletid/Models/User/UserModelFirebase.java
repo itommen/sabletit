@@ -167,4 +167,8 @@ public class UserModelFirebase {
             }
         });
     }
+
+    public void logout() {
+        FirebaseAuth.getInstance().signOut();
+    }
 }

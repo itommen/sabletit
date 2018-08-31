@@ -99,6 +99,16 @@ public class MasterDetailActivity extends AppCompatActivity {
                                 newFragment = new MapsActivity();
                                 break;
                             }
+
+                            case R.id.menu_logout: {
+                                userViewModel.logout();
+                                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                                transaction.replace(R.id.content_frame, new LoginFragment());
+                                transaction.addToBackStack(null);
+
+                                transaction.commit();
+                            }
                         }
 
                         if(newFragment != null) {

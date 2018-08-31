@@ -30,6 +30,10 @@ public class UserViewModel extends ViewModel {
         });
     }
 
+    public void logout() {
+        UserModel.instance.logout();
+    }
+
     public interface RegisterListener {
         void onSuccess(User user);
 
