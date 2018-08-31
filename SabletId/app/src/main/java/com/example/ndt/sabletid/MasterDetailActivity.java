@@ -89,7 +89,7 @@ public class MasterDetailActivity extends AppCompatActivity {
                                 break;
                             }
 
-                            case R.id.menu_create_sablet: {
+                            case R.id.menu_create_sublet: {
                                 newFragment = new CreateNewSubletPostFragment();
                                 break;
                             }

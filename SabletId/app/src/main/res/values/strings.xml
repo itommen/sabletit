@@ -3,5 +3,5 @@
     <string name="login">Login</string>
     <string name="Register">Register</string>
     <string name="edit_details">Edit Details</string>
-    <string name="create_sablet">Create Sablet</string>
+    <string name="create_sublet">Create Sublet</string>
 </resources>

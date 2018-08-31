@@ -7,8 +7,8 @@
             android:title="@string/edit_details" />
 
         <item
-            android:id="@+id/menu_create_sablet"
+            android:id="@+id/menu_create_sublet"
             android:icon="@drawable/ic_launcher"
-            android:title="@string/create_sablet" />
+            android:title="@string/create_sublet" />
     </group>
 </menu>
