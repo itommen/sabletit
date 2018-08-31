@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +22,7 @@ import com.example.ndt.sabletid.Models.User.User;
 import com.example.ndt.sabletid.ViewModels.UserViewModel;
 import com.google.firebase.auth.FirebaseUser;
 
-public class UserDetailsActivity extends Fragment {
+public class UserDetailsFragment extends Fragment {
     private static final String ARG_NAME = "ARG_NAME";
     private static final String ARG_EMAIL = "ARG_EMAIL";
     private static final String ARG_PHONE = "ARG_PHONE";
@@ -57,7 +56,7 @@ public class UserDetailsActivity extends Fragment {
             onRestoreInstanceState(savedInstanceState);
         }
 
-        final View view = inflater.inflate(R.layout.activity_user_details, container, false);
+        final View view = inflater.inflate(R.layout.fragment_user_details, container, false);
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
@@ -68,7 +67,7 @@ public class UserDetailsActivity extends Fragment {
         rbFemale = view.findViewById(R.id.radioRegisterFemale);
         ivImage = view.findViewById(R.id.ivImage);
 
-        userViewModel.getConnectedUser().observe(UserDetailsActivity.this, new Observer<User>() {
+        userViewModel.getConnectedUser().observe(UserDetailsFragment.this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable final User user) {
                 firebaseUser = userViewModel.getFirebaseUser();
@@ -111,7 +110,7 @@ public class UserDetailsActivity extends Fragment {
                                Toast.LENGTH_LONG).show();
 
                        // TODO: Complete
-//                       Intent goToNextActivity = new Intent(getApplicationContext(), LoginActivity.class);
+//                       Intent goToNextActivity = new Intent(getApplicationContext(), LoginFragment.class);
 //                       startActivity(goToNextActivity);
                    }
 

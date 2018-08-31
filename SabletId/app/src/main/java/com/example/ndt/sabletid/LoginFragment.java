@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.example.ndt.sabletid.ViewModels.UserViewModel;
 
-public class LoginActivity extends Fragment {
+public class LoginFragment extends Fragment {
     private UserViewModel userViewModel;
     private EditText email, password;
     private String emailText, passwordText;
@@ -22,7 +22,7 @@ public class LoginActivity extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final View view = inflater.inflate(R.layout.activity_login, container, false);
+        final View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
@@ -45,7 +45,7 @@ public class LoginActivity extends Fragment {
                         Toast.makeText(view.getContext(), "Welcome to SubletIt",
                                 Toast.LENGTH_LONG).show();
 
-                        Fragment newFragment = new UserDetailsActivity();
+                        Fragment newFragment = new UserDetailsFragment();
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
                         transaction.replace(R.id.content_frame, newFragment);
@@ -68,7 +68,7 @@ public class LoginActivity extends Fragment {
         view.findViewById(R.id.btnMoveRegister).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment newFragment = new RegisterActivity();
+                Fragment newFragment = new RegisterFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
                 transaction.replace(R.id.content_frame, newFragment);

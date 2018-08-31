@@ -1,10 +1,8 @@
 package com.example.ndt.sabletid;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +14,7 @@ import android.widget.Toast;
 import com.example.ndt.sabletid.Models.User.User;
 import com.example.ndt.sabletid.ViewModels.UserViewModel;
 
-public class RegisterActivity extends Fragment {
+public class RegisterFragment extends Fragment {
     private UserViewModel userViewModel;
     private EditText email, password, name, phoneNumber;
     private Boolean gender;
@@ -26,7 +24,7 @@ public class RegisterActivity extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final View view = inflater.inflate(R.layout.activity_register, container, false);
+        final View view = inflater.inflate(R.layout.fragment_register, container, false);
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
@@ -60,7 +58,7 @@ public class RegisterActivity extends Fragment {
                         Toast.makeText(view.getContext(), "Your account has been created successfully",
                                 Toast.LENGTH_LONG).show();
 
-                        Fragment newFragment = new UserDetailsActivity();
+                        Fragment newFragment = new UserDetailsFragment();
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
                         transaction.replace(R.id.content_frame, newFragment);
@@ -84,7 +82,7 @@ public class RegisterActivity extends Fragment {
         view.findViewById(R.id.btnMoveLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment newFragment = new LoginActivity();
+                Fragment newFragment = new LoginFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
                 transaction.replace(R.id.content_frame, newFragment);

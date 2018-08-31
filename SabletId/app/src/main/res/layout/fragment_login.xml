@@ -6,7 +6,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:layout_margin="8dp"
-    tools:context=".LoginActivity" >
+    tools:context=".LoginFragment" >
 
         <TextView
             android:id="@+id/loginHeader"
