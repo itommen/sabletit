@@ -17,7 +17,7 @@ public class SubletPost {
     private String endDate;
     private String city;
     private String photo;
-    private int cost;
+    private int price;
     private double latitude;
     private double longitude;
 
@@ -27,21 +27,21 @@ public class SubletPost {
 
     @Ignore
     public SubletPost(String userId, String description, String startDate, String endDate, String city, String photo,
-                      int cost, double latitude, double longitude) {
+                      int price, double latitude, double longitude) {
         this.userId = userId;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.city = city;
         this.photo = photo;
-        this.cost = cost;
+        this.price = price;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
     @Ignore
     public SubletPost(@NonNull String id, String userId, String description, String startDate, String endDate, String city, String photo,
-                      int cost, double latitude, double longitude) {
+                      int price, double latitude, double longitude) {
         this.id = id;
         this.userId = userId;
         this.description = description;
@@ -49,7 +49,7 @@ public class SubletPost {
         this.endDate = endDate;
         this.city = city;
         this.photo = photo;
-        this.cost = cost;
+        this.price = price;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -103,12 +103,12 @@ public class SubletPost {
         this.city = city;
     }
 
-    public int getCost() {
-        return cost;
+    public int getPrice() {
+        return price;
     }
 
-    public void setCost(int cost) {
-        this.cost = cost;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public double getLatitude() {
