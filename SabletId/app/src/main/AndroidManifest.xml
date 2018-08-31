@@ -13,11 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".LoginFragment">
-        </activity>
-        <activity android:name=".RegisterFragment" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".UserDetailsFragment" />
         <activity android:name=".MasterDetailActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateNewSubletPostFragment"></activity>
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBvMO8KWvQk377AR2maQCJ_76fJC4D1OQc" />
     </application>
 </manifest>
