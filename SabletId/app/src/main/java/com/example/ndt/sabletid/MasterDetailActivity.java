@@ -36,9 +36,22 @@ public class MasterDetailActivity extends AppCompatActivity {
         userViewModel.getConnectedUser().observe(this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable final User user) {
-                Fragment newFragment = user == null
-                        ? new LoginFragment()
-                        : new UserDetailsFragment();
+                Fragment newFragment;
+                int relevantMenu;
+
+                if(user == null) {
+                    newFragment = new LoginFragment();
+                    relevantMenu = R.menu.guest_drawer_view;
+                }
+                else {
+                    newFragment = new UserDetailsFragment();
+                    relevantMenu = R.menu.user_drawer_view;
+                }
+
+                NavigationView navigationView = findViewById(R.id.nav_view);
+                navigationView.getMenu().clear();
+                navigationView.inflateMenu(relevantMenu);
+
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
                 transaction.replace(R.id.content_frame, newFragment);
