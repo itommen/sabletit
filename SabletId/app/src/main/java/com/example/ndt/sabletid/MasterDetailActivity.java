@@ -20,6 +20,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 public class MasterDetailActivity extends AppCompatActivity {
     private UserViewModel userViewModel;
+    private boolean isLogged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,28 +38,31 @@ public class MasterDetailActivity extends AppCompatActivity {
         userViewModel.getConnectedUser().observe(this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable final User user) {
-                Fragment newFragment;
-                int relevantMenu;
+                if((!isLogged && user != null) || (isLogged && user == null)) {
+                    isLogged = user != null;
+                    
+                    Fragment newFragment;
+                    int relevantMenu;
 
-                if(user == null) {
-                    newFragment = new LoginFragment();
-                    relevantMenu = R.menu.guest_drawer_view;
+                    if (user == null) {
+                        newFragment = new LoginFragment();
+                        relevantMenu = R.menu.guest_drawer_view;
+                    } else {
+                        newFragment = new UserDetailsFragment();
+                        relevantMenu = R.menu.user_drawer_view;
+                    }
+
+                    NavigationView navigationView = findViewById(R.id.nav_view);
+                    navigationView.getMenu().clear();
+                    navigationView.inflateMenu(relevantMenu);
+
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                    transaction.replace(R.id.content_frame, newFragment);
+                    transaction.addToBackStack(null);
+
+                    transaction.commit();
                 }
-                else {
-                    newFragment = new UserDetailsFragment();
-                    relevantMenu = R.menu.user_drawer_view;
-                }
-
-                NavigationView navigationView = findViewById(R.id.nav_view);
-                navigationView.getMenu().clear();
-                navigationView.inflateMenu(relevantMenu);
-
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-                transaction.replace(R.id.content_frame, newFragment);
-                transaction.addToBackStack(null);
-
-                transaction.commit();
             }
         });
 
