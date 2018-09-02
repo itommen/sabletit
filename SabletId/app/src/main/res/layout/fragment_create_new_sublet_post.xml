@@ -11,8 +11,7 @@
         android:id="@+id/createNewSubletPostHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:text="Create Sublet Post:"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
@@ -24,7 +23,7 @@
             android:id="@+id/ivCreateSubletPostEditImage"
             android:layout_width="140dp"
             android:layout_height="140dp"
-            android:src="@drawable/ic_action_name" />
+            android:src="@drawable/ic_launcher" />
 
         <Button
             android:id="@+id/btnCreateSubletPostEditImage"
@@ -36,7 +35,6 @@
             android:text="edit image" />
 
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,7 +46,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@id/etCreateSubletPostDescription"
             android:text="Description:"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <EditText
             android:id="@+id/etCreateSubletPostDescription"
@@ -70,7 +68,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@id/etCreateSubletPostPrice"
             android:text="Price:"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <EditText
             android:id="@+id/etCreateSubletPostPrice"
@@ -90,7 +88,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@id/etCreateSubletPostStartDate"
             android:text="Start Date:"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <com.example.ndt.sabletid.Dialogs.DateEditText
             android:id="@+id/etCreateSubletPostStartDate"
@@ -109,7 +107,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@id/etCreateSubletPostEndDate"
             android:text="End Date:"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <com.example.ndt.sabletid.Dialogs.DateEditText
             android:id="@+id/etCreateSubletPostEndDate"
@@ -128,7 +126,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@id/etCreateSubletPostCity"
             android:text="City:"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <EditText
             android:id="@+id/etCreateSubletPostCity"
@@ -145,43 +143,43 @@
             android:id="@+id/tvCreateSubletPostLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:labelFor="@id/place_autocomplete_fragment"
             android:text="Location:"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <fragment
             android:id="@+id/place_autocomplete_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
             />
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnSaveNewPost"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:layout_weight="1"
             android:text="Save" />
 
         <Button
             android:id="@+id/btnCancelNewPost"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Cancel" />
 
     </LinearLayout>
     <ProgressBar
-        android:id="@+id/newSubletPostIndeterminateBar"
+        android:id="@+id/createSubletPostIndeterminateBar"
         android:layout_width="match_parent"
         android:layout_height="50dp" />
 </LinearLayout>

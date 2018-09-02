@@ -1,6 +1,9 @@
 package com.example.ndt.sabletid;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -9,7 +12,9 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatRadioButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +26,8 @@ import com.example.ndt.sabletid.Models.Image.ImageModel;
 import com.example.ndt.sabletid.Models.User.User;
 import com.example.ndt.sabletid.ViewModels.UserViewModel;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.io.ByteArrayOutputStream;
 
 public class UserDetailsFragment extends Fragment {
     private static final String ARG_NAME = "ARG_NAME";
@@ -52,10 +59,6 @@ public class UserDetailsFragment extends Fragment {
                              final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState != null) {
-            onRestoreInstanceState(savedInstanceState);
-        }
-
         final View view = inflater.inflate(R.layout.fragment_user_details, container, false);
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
@@ -66,6 +69,10 @@ public class UserDetailsFragment extends Fragment {
         rbMale = view.findViewById(R.id.radioRegisterMale);
         rbFemale = view.findViewById(R.id.radioRegisterFemale);
         ivImage = view.findViewById(R.id.ivImage);
+
+        if (savedInstanceState != null) {
+            onRestoreInstanceState(savedInstanceState);
+        }
 
         userViewModel.getConnectedUser().observe(UserDetailsFragment.this, new Observer<User>() {
             @Override
@@ -160,7 +167,7 @@ public class UserDetailsFragment extends Fragment {
                     savedInstanceState.putString(ARG_PHONE, etPhone.getText().toString().trim());
                     savedInstanceState.putBoolean(ARG_GENDER, rbFemale.isChecked());
 
-                    //ImageModel.instance.saveImageToFile(imageBitmap, ARG_URL);
+//                    ImageModel.instance.saveImageToFile(imageBitmap, ARG_URL);
                 }
             }
         });
@@ -168,10 +175,18 @@ public class UserDetailsFragment extends Fragment {
         view.findViewById(R.id.btnEditImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent takePictureIntent = new Intent(
-                        MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                if (ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_IMAGE_CAPTURE);
+                }
+                else {
+                    Intent takePictureIntent = new Intent(
+                            MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+
+                        getActivity().startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    }
                 }
             }
         });
@@ -208,6 +223,31 @@ public class UserDetailsFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_IMAGE_CAPTURE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent takePictureIntent = new Intent(
+                            MediaStore.ACTION_IMAGE_CAPTURE);
+
+                    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        getActivity().startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    }
+                } else {
+                    Toast.makeText(getView().getContext(), "Can't open camera without permissions",
+                            Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+    }
+
     public void onRestoreInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
 
@@ -236,6 +276,6 @@ public class UserDetailsFragment extends Fragment {
         bundle.putString(ARG_PHONE, etPhone.getText().toString().trim());
         bundle.putBoolean(ARG_GENDER, rbFemale.isChecked());
 
-        //ImageModel.instance.saveImageToFile(imageBitmap, ARG_URL);
+//        ImageModel.instance.saveImageToFile(imageBitmap, ARG_URL);
     }
 }

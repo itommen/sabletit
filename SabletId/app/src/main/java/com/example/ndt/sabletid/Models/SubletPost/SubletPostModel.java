@@ -81,11 +81,11 @@ public class SubletPostModel {
         subletPostModelFirebase.addSubletPost(subletPost, new SubletPostModelFirebase.AddPostListener() {
 
             @Override
-            public void onSuccess() {
-                AsyncSubletPostDao.insert(Arrays.asList(subletPost), new AsyncSubletPostDao.AsyncSubletPostDaoListener<Boolean>() {
+            public void onSuccess(final SubletPost post) {
+                AsyncSubletPostDao.insert(Arrays.asList(post), new AsyncSubletPostDao.AsyncSubletPostDaoListener<Boolean>() {
                     @Override
                     public void onComplete(Boolean data) {
-                        listener.OnSuccess(subletPost);
+                        listener.OnSuccess(post);
                     }
                 });
             }

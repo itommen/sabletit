@@ -21,7 +21,7 @@ public class SubletPostModelFirebase {
     private ValueEventListener getPostsByUserIdEventListener;
 
     public interface AddPostListener {
-        void onSuccess();
+        void onSuccess(SubletPost post);
 
         void onFailure(String errorMessage);
     }
@@ -51,14 +51,17 @@ public class SubletPostModelFirebase {
     }
 
     public void addSubletPost(final SubletPost subletPost, final AddPostListener listener) {
-        ref.child(subletPost.getId()).setValue(subletPost).addOnCompleteListener(new OnCompleteListener<Void>() {
+        DatabaseReference pushedPostRef = ref.push();
+        final String postId = pushedPostRef.getKey();
+        pushedPostRef.setValue(subletPost).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (!task.isSuccessful()) {
                     listener.onFailure(task.getException().getMessage());
                 }
                 else {
-                    listener.onSuccess();
+                    subletPost.setId(postId);
+                    listener.onSuccess(subletPost);
                 }
             }
         });
