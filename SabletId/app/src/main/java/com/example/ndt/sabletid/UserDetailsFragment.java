@@ -184,8 +184,7 @@ public class UserDetailsFragment extends Fragment {
                     Intent takePictureIntent = new Intent(
                             MediaStore.ACTION_IMAGE_CAPTURE);
                     if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-
-                        getActivity().startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     }
                 }
             }
@@ -234,7 +233,7 @@ public class UserDetailsFragment extends Fragment {
                             MediaStore.ACTION_IMAGE_CAPTURE);
 
                     if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                        getActivity().startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     }
                 } else {
                     Toast.makeText(getView().getContext(), "Can't open camera without permissions",
@@ -263,8 +262,8 @@ public class UserDetailsFragment extends Fragment {
 //            imageBitmap = bitMap;
 //            ImageModel.instance.DeleteImage(ARG_URL);
 //        }
-
-        isInstanceState = true;
+//
+//        isInstanceState = true;
     }
 
     @Override
