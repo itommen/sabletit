@@ -1,10 +1,12 @@
 package com.example.ndt.sabletid;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,22 +66,30 @@ public class SubletFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sublet, container, false);
+        final View view = inflater.inflate(R.layout.fragment_sublet, container, false);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+        final SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.sublet_map);
-        mapFragment.getMapAsync(this);
+
+        final OnMapReadyCallback self = this;
 
         SubletPostViewModel subletViewModel = ViewModelProviders.of(this).get(SubletPostViewModel.class);
-        
-        sublet = subletViewModel.getSubletPostById(subletId).getValue();
+        subletViewModel.getSubletPostById(subletId).observe(this, new Observer<SubletPost>() {
+            @Override
+            public void onChanged(@Nullable SubletPost subletPost) {
+                if(subletPost.getId() != null) {
+                    sublet = subletPost;
 
-        if(sublet != null) {
-            ((TextView) view.findViewById(R.id.sfv_price)).setText(sublet.getPrice());
-            ((TextView) view.findViewById(R.id.sfv_from)).setText(sublet.getStartDate());
-            ((TextView) view.findViewById(R.id.sfv_to)).setText(sublet.getEndDate());
-            ((TextView) view.findViewById(R.id.sfv_description)).setText(sublet.getDescription());
-        }
+                    ((TextView) view.findViewById(R.id.sfv_price)).setText(Integer.toString(subletPost.getPrice()));
+                    ((TextView) view.findViewById(R.id.sfv_from)).setText(subletPost.getStartDate());
+                    ((TextView) view.findViewById(R.id.sfv_to)).setText(subletPost.getEndDate());
+                    ((TextView) view.findViewById(R.id.sfv_description)).setText(subletPost.getDescription());
+
+                    mapFragment.getMapAsync(self);
+                }
+            }
+        });
+
         return view;
     }
 
@@ -91,6 +101,8 @@ public class SubletFragment extends Fragment implements OnMapReadyCallback {
             LatLng subletLocation = new LatLng(sublet.getLatitude(), sublet.getLongitude());
             mMap.addMarker(new MarkerOptions().position(subletLocation).title("Here"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(subletLocation));
+
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         }
     }
 }

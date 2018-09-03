@@ -1,23 +1,36 @@
 package com.example.ndt.sabletid;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.ndt.sabletid.Models.SubletPost.SubletPost;
+import com.example.ndt.sabletid.ViewModels.SubletPostViewModel;
+import com.example.ndt.sabletid.ViewModels.UserViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends Fragment implements OnMapReadyCallback {
+import java.util.HashMap;
+import java.util.List;
+
+public class MapsActivity extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
+
+    private HashMap<Marker, String> MarkerToPost;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,9 +61,41 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        SubletPostViewModel viewModel = ViewModelProviders.of(this).get(SubletPostViewModel.class);
+
+        googleMap.setOnMarkerClickListener(this);
+
+        viewModel.getAllSubletPosts().observe(this, new Observer<List<SubletPost>>() {
+            @Override
+            public void onChanged(@Nullable List<SubletPost> subletPosts) {
+                mMap.clear();
+
+                if(subletPosts.size() > 0) {
+                    MarkerToPost = new HashMap<>();
+                    for (SubletPost sublet : subletPosts) {
+                        LatLng location = new LatLng(sublet.getLatitude(), sublet.getLongitude());
+                        Marker marker = mMap.addMarker(new MarkerOptions().position(location).title(String.format("%s - %s", sublet.getStartDate(), sublet.getEndDate())));
+
+                        MarkerToPost.put(marker, sublet.getId());
+                    }
+
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(subletPosts.get(0).getLatitude(), subletPosts.get(0).getLongitude())));
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        String subletId = MarkerToPost.get(marker);
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.content_frame, SubletFragment.newInstance(subletId));
+        transaction.addToBackStack(null);
+
+        transaction.commit();
+
+        return true;
     }
 }

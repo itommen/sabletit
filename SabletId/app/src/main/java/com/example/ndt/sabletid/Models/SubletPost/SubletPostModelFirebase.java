@@ -53,6 +53,7 @@ public class SubletPostModelFirebase {
     public void addSubletPost(final SubletPost subletPost, final AddPostListener listener) {
         DatabaseReference pushedPostRef = ref.push();
         final String postId = pushedPostRef.getKey();
+        subletPost.setId(postId);
         pushedPostRef.setValue(subletPost).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
