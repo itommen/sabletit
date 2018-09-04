@@ -102,4 +102,29 @@ public class AsyncUserDao {
         UserAsyncTask task = new UserAsyncTask();
         task.execute(user);
     }
+
+    public static void getUserById(final String userId, final AsyncUserDaoListener<User> listener) {
+        class UserAsyncTask extends AsyncTask<String, String, User> {
+            @Override
+            protected User doInBackground(String... strings) {
+                User post = new User();
+                UserDao dao = AppDatabase.getInstance().userDao();
+
+                if (dao != null) {
+                    post = dao.getUserById(userId);
+                }
+
+                return post;
+            }
+
+            @Override
+            protected void onPostExecute(User user) {
+                super.onPostExecute(user);
+                listener.onComplete(user);
+            }
+        }
+
+        UserAsyncTask task = new UserAsyncTask();
+        task.execute();
+    }
 }

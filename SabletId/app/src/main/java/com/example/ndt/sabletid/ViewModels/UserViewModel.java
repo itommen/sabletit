@@ -103,4 +103,9 @@ public class UserViewModel extends ViewModel {
     public FirebaseUser getFirebaseUser() {
         return UserModel.instance.connectedFirebaseUser;
     }
+
+    public LiveData<User> getUserById(String id) {
+        UserModel.instance.InitUserId(id);
+        return UserModel.instance.userById;
+    }
 }

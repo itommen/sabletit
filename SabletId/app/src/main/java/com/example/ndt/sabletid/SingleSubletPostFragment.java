@@ -1,6 +1,7 @@
 package com.example.ndt.sabletid;
 
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -14,7 +15,9 @@ import android.widget.TextView;
 
 import com.example.ndt.sabletid.Models.Image.ImageModel;
 import com.example.ndt.sabletid.Models.SubletPost.SubletPost;
+import com.example.ndt.sabletid.Models.User.User;
 import com.example.ndt.sabletid.ViewModels.SubletPostViewModel;
+import com.example.ndt.sabletid.ViewModels.UserViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -68,10 +71,19 @@ public class SingleSubletPostFragment extends Fragment implements OnMapReadyCall
         final OnMapReadyCallback self = this;
 
         SubletPostViewModel subletViewModel = ViewModelProviders.of(this).get(SubletPostViewModel.class);
+        final UserViewModel userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+
         subletViewModel.getSubletPostById(subletId).observe(this, new Observer<SubletPost>() {
             @Override
             public void onChanged(@Nullable SubletPost subletPost) {
                 if(subletPost.getId() != null) {
+                    userViewModel.getUserById(subletPost.getUserId()).observe(getActivity(), new Observer<User>() {
+                        @Override
+                        public void onChanged(@Nullable User user) {
+                            ((TextView) view.findViewById(R.id.sfv_owner)).setText(user.getName() + " (" + user.getPhone() + ")");
+                        }
+                    });
+
                     sublet = subletPost;
 
                     ((TextView) view.findViewById(R.id.sfv_price)).setText(Integer.toString(subletPost.getPrice()));

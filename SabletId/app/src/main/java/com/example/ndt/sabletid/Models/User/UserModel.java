@@ -11,6 +11,7 @@ public class UserModel {
     private UserModelFirebase userModelFirebase;
     public FirebaseUser connectedFirebaseUser;
     public ConnectedUser connectedUser;
+    public UserById userById;
 
     private UserModel() {
         userModelFirebase = new UserModelFirebase();
@@ -170,5 +171,50 @@ public class UserModel {
                 listener.OnFailure(errorMessage);
             }
         });
+    }
+
+    public class UserById extends MutableLiveData<User> {
+        String userId = "";
+
+        public UserById() {
+            super();
+            setValue(new User());
+        }
+
+        public void InitUserId(String userId) {
+            this.userId = userId;
+        }
+
+        @Override
+        protected void onActive() {
+            super.onActive();
+
+            AsyncUserDao.getUserById(userId, new AsyncUserDao.AsyncUserDaoListener<User>() {
+                @Override
+                public void onComplete(User data) {
+                    setValue(data);
+
+                    userModelFirebase.getUserById(userId, new UserModelFirebase.GetUserByIdListener() {
+                        @Override
+                        public void onSuccess(User post) {
+                            setValue(post);
+                        }
+                    });
+                }
+            });
+        }
+
+        @Override
+        protected void onInactive() {
+            super.onInactive();
+        }
+    }
+
+    public void InitUserId(String userId) {
+        if (userById == null) {
+            userById = new UserById();
+        }
+
+        userById.InitUserId(userId);
     }
 }
