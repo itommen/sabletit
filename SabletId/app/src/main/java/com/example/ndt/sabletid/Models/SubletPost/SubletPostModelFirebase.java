@@ -53,7 +53,7 @@ public class SubletPostModelFirebase {
     public void addSubletPost(final SubletPost subletPost, final AddPostListener listener) {
         DatabaseReference pushedPostRef = ref.push();
         final String postId = pushedPostRef.getKey();
-        subletPost.setId(postId);
+
         pushedPostRef.setValue(subletPost).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -102,7 +102,10 @@ public class SubletPostModelFirebase {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<SubletPost> posts = new LinkedList<>();
                 for (DataSnapshot stSnapshot : dataSnapshot.getChildren()) {
+                    String id = stSnapshot.getKey();
                     SubletPost currentSubletPost = stSnapshot.getValue(SubletPost.class);
+                    currentSubletPost.setId(id);
+
                     posts.add(currentSubletPost);
                 }
 
@@ -127,7 +130,10 @@ public class SubletPostModelFirebase {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<SubletPost> posts = new LinkedList<>();
                 for (DataSnapshot stSnapshot : dataSnapshot.getChildren()) {
+                    String id = stSnapshot.getKey();
                     SubletPost currentSubletPost = stSnapshot.getValue(SubletPost.class);
+                    currentSubletPost.setId(id);
+
                     posts.add(currentSubletPost);
                 }
 
@@ -150,9 +156,11 @@ public class SubletPostModelFirebase {
         getPostByIdEventListener = ref.child(postId).addValueEventListener(new ValueEventListener(){
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String id = dataSnapshot.getKey();
                 SubletPost post = dataSnapshot.getValue(SubletPost.class);
 
                 if (post != null) {
+                    post.setId(id);
                     listener.onSuccess(post);
                 } else {
                     listener.onSuccess(null);

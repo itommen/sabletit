@@ -117,6 +117,13 @@ public class SubletPostModel {
                         @Override
                         public void onSuccess(List<SubletPost> subletPosts) {
                             setValue(subletPosts);
+
+                            AsyncSubletPostDao.insert(subletPosts, new AsyncSubletPostDao.AsyncSubletPostDaoListener<Boolean>() {
+                                @Override
+                                public void onComplete(Boolean data) {
+
+                                }
+                            });
                         }
                     });
                 }
