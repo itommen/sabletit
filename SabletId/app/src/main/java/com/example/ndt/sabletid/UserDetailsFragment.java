@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.util.Log;
@@ -116,9 +117,13 @@ public class UserDetailsFragment extends Fragment {
                        Toast.makeText(view.getContext(), "Your account has been deleted successfully",
                                Toast.LENGTH_LONG).show();
 
-                       // TODO: Complete
-//                       Intent goToNextActivity = new Intent(getApplicationContext(), LoginFragment.class);
-//                       startActivity(goToNextActivity);
+                       Fragment newFragment = new LoginFragment();
+                       FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                       transaction.replace(R.id.content_frame, newFragment);
+                       transaction.addToBackStack(null);
+
+                       transaction.commit();
                    }
 
                    @Override

@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -189,6 +190,14 @@ public class CreateNewSubletPostFragment extends Fragment {
                 progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(getView().getContext(), "Your post has been published successfully",
                         Toast.LENGTH_LONG).show();
+
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+                Fragment newFr = SingleSubletPostFragment.newInstance(subletPost.getId());
+                transaction.replace(R.id.content_frame, newFr);
+                transaction.addToBackStack(null);
+
+                transaction.commit();
             }
 
             @Override

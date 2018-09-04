@@ -32,4 +32,9 @@ public class AllSubletsListFragment extends BaseSubletListFragment {
         SubletPostViewModel subletViewModel = ViewModelProviders.of(this).get(SubletPostViewModel.class);
         return subletViewModel.getAllSubletPosts();
     }
+
+    @Override
+    protected Fragment GetFragmentToTransferOnItemClicked(String subletId) {
+        return SingleSubletPostFragment.newInstance(subletId);
+    }
 }

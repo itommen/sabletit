@@ -3,6 +3,7 @@ package com.example.ndt.sabletid;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import com.example.ndt.sabletid.Models.SubletPost.SubletPost;
 import com.example.ndt.sabletid.ViewModels.SubletPostViewModel;
@@ -34,5 +35,10 @@ public class UsersSubletsListFragment extends BaseSubletListFragment {
     protected LiveData<List<SubletPost>> GetSublets() {
         SubletPostViewModel subletViewModel = ViewModelProviders.of(this).get(SubletPostViewModel.class);
         return subletViewModel.getSubletPostsByUserId(userId);
+    }
+
+    @Override
+    protected Fragment GetFragmentToTransferOnItemClicked(String subletId) {
+        return EditSubletPostFragment.newInstance(subletId);
     }
 }

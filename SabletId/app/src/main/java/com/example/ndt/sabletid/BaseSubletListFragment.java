@@ -58,6 +58,8 @@ public abstract class BaseSubletListFragment extends ListFragment implements Ada
 
     protected abstract LiveData<List<SubletPost>> GetSublets();
 
+    protected abstract Fragment GetFragmentToTransferOnItemClicked(String subletId);
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -79,8 +81,7 @@ public abstract class BaseSubletListFragment extends ListFragment implements Ada
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-        Fragment newFr = SingleSubletPostFragment.newInstance(Sublets.get(position).getId());
-        transaction.replace(R.id.content_frame, newFr);
+        transaction.replace(R.id.content_frame, GetFragmentToTransferOnItemClicked(Sublets.get(position).getId()));
         transaction.addToBackStack(null);
 
         transaction.commit();

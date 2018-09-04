@@ -47,7 +47,7 @@ public class MasterDetailActivity extends AppCompatActivity {
                         newFragment = new LoginFragment();
                         relevantMenu = R.menu.guest_drawer_view;
                     } else {
-                        newFragment = new UserDetailsFragment();
+                        newFragment = new AllSubletsFragment();
                         relevantMenu = R.menu.user_drawer_view;
                     }
 
