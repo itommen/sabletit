@@ -40,14 +40,6 @@ public class SingleSubletPostFragment extends Fragment implements OnMapReadyCall
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param subletId The sublet id.
-     * @return A new instance of fragment SingleSubletPostFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SingleSubletPostFragment newInstance(String subletId) {
         SingleSubletPostFragment fragment = new SingleSubletPostFragment();
         Bundle args = new Bundle();

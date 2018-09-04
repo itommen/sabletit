@@ -21,7 +21,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 public class MasterDetailActivity extends AppCompatActivity {
     private UserViewModel userViewModel;
-    private boolean isLogged = false;
+    private User loggedUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +39,7 @@ public class MasterDetailActivity extends AppCompatActivity {
         userViewModel.getConnectedUser().observe(this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable final User user) {
-                if((!isLogged && user != null) || (isLogged && user == null)) {
-                    isLogged = user != null;
-                    
+                if((loggedUser == null && user != null) || (loggedUser != null && user == null)) {
                     Fragment newFragment;
                     int relevantMenu;
 
@@ -52,6 +50,8 @@ public class MasterDetailActivity extends AppCompatActivity {
                         newFragment = new UserDetailsFragment();
                         relevantMenu = R.menu.user_drawer_view;
                     }
+
+                    loggedUser = user;
 
                     NavigationView navigationView = findViewById(R.id.nav_view);
                     navigationView.getMenu().clear();
@@ -97,6 +97,11 @@ public class MasterDetailActivity extends AppCompatActivity {
 
                             case R.id.menu_all_sublets: {
                                 newFragment = new AllSubletsFragment();
+                                break;
+                            }
+
+                            case R.id.menu_my_sublets: {
+                                newFragment = UsersSubletsListFragment.newInstance(loggedUser.getId());
                                 break;
                             }
 

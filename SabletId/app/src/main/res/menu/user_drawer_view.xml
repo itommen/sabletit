@@ -11,6 +11,11 @@
             android:icon="@drawable/ic_launcher"
             android:title="@string/all_sublets" />
 
+        <item
+            android:id="@+id/menu_my_sublets"
+            android:icon="@drawable/ic_launcher"
+            android:title="@string/my_sublets" />
+
 
         <item
             android:id="@+id/menu_create_sublet"
