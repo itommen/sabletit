@@ -29,7 +29,16 @@ import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragmen
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseUser;
 
+import static android.text.style.TtsSpan.ARG_GENDER;
+
 public class CreateNewSubletPostFragment extends Fragment {
+    private static final String ARG_DESCRIPTION = "ARG_DESCRIPTION";
+    private static final String ARG_PRICE = "ARG_PRICE";
+    private static final String ARG_START_DATE = "ARG_START_DATE";
+    private static final String ARG_END_DATE = "ARG_END_DATE";
+    private static final String ARG_CITY = "ARG_CITY";
+    private static final String ARG_URL = "NewSubletImage.png";
+
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private FirebaseUser connectedUser;
@@ -52,7 +61,7 @@ public class CreateNewSubletPostFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         final View view = inflater.inflate(R.layout.fragment_create_new_sublet_post, container, false);
@@ -112,7 +121,6 @@ public class CreateNewSubletPostFragment extends Fragment {
         view.findViewById(R.id.btnCreateSubletPostEditImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (ContextCompat.checkSelfPermission(getActivity(),
                         Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -126,6 +134,19 @@ public class CreateNewSubletPostFragment extends Fragment {
                     }
                 }
             }});
+
+        view.findViewById(R.id.btnCancelNewPost).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etDescription.setText("");
+                etCity.setText("");
+                etEndDate.setText("");
+                etStartDate.setText("");
+                etPrice.setText("");
+                autocompleteFragment.setText("");
+                ivImage.setImageResource(R.drawable.ic_launcher);
+            }
+        });
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -198,28 +219,38 @@ public class CreateNewSubletPostFragment extends Fragment {
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request.
         }
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
 
-//        etUserName.setText(savedInstanceState.getString(ARG_NAME));
-//        etEmail.setText(savedInstanceState.getString(ARG_EMAIL));
-//        etPhone.setText(savedInstanceState.getString(ARG_PHONE));
-//        rbFemale.setChecked(savedInstanceState.getBoolean(ARG_GENDER));
-//        rbMale.setChecked(!savedInstanceState.getBoolean(ARG_GENDER));
-//
-////        Bitmap bitMap = ImageModel.instance.loadImageFromFile(ARG_URL);
-////        if (bitMap != null) {
-////            ivImage.setImageBitmap(bitMap);
-////            imageBitmap = bitMap;
-////            ImageModel.instance.DeleteImage(ARG_URL);
-////        }
-//
+        etDescription.setText(savedInstanceState.getString(ARG_DESCRIPTION));
+        etStartDate.setText(savedInstanceState.getString(ARG_START_DATE));
+        etEndDate.setText(savedInstanceState.getString(ARG_END_DATE));
+        etPrice.setText(savedInstanceState.getString(ARG_PRICE));
+        etCity.setText(savedInstanceState.getString(ARG_CITY));
+
+        Bitmap bitMap = ImageModel.instance.loadImageFromFile(ARG_URL);
+        if (bitMap != null) {
+            ivImage.setImageBitmap(bitMap);
+            imageBitmap = bitMap;
+            ImageModel.instance.DeleteImage(ARG_URL);
+        }
+
         isInstanceState = true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle){
+        super.onSaveInstanceState(bundle);
+
+        bundle.putString(ARG_DESCRIPTION, etDescription.getText().toString().trim());
+        bundle.putString(ARG_PRICE, etPrice.getText().toString().trim());
+        bundle.putString(ARG_START_DATE, etStartDate.getText().toString().trim());
+        bundle.putString(ARG_END_DATE, etEndDate.getText().toString().trim());
+        bundle.putString(ARG_CITY, etCity.getText().toString().trim());
+
+        ImageModel.instance.saveImageToFile(imageBitmap, ARG_URL);
     }
 }
