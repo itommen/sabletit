@@ -95,6 +95,11 @@ public class MasterDetailActivity extends AppCompatActivity {
                                 break;
                             }
 
+                            case R.id.menu_all_sublets: {
+                                newFragment = new AllSubletsFragment();
+                                break;
+                            }
+
                             case R.id.menu_create_sublet: {
                                 newFragment = new CreateNewSubletPostFragment();
                                 break;

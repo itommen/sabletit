@@ -4,17 +4,14 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ndt.sabletid.Models.SubletPost.SubletPost;
 import com.example.ndt.sabletid.ViewModels.SubletPostViewModel;
-import com.example.ndt.sabletid.ViewModels.UserViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -91,7 +88,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Google
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-        transaction.replace(R.id.content_frame, SubletFragment.newInstance(subletId));
+        transaction.replace(R.id.content_frame, SingleSubletPostFragment.newInstance(subletId));
         transaction.addToBackStack(null);
 
         transaction.commit();

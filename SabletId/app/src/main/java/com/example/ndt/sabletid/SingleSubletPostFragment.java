@@ -1,11 +1,8 @@
 package com.example.ndt.sabletid;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,10 +25,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SubletFragment#newInstance} factory method to
+ * Use the {@link SingleSubletPostFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SubletFragment extends Fragment implements OnMapReadyCallback {
+public class SingleSubletPostFragment extends Fragment implements OnMapReadyCallback {
     private static final String ARG_SUBLET_ID = "subletId";
 
     private GoogleMap mMap;
@@ -39,7 +36,7 @@ public class SubletFragment extends Fragment implements OnMapReadyCallback {
     private SubletPost sublet;
     private String subletId;
 
-    public SubletFragment() {
+    public SingleSubletPostFragment() {
         // Required empty public constructor
     }
 
@@ -48,11 +45,11 @@ public class SubletFragment extends Fragment implements OnMapReadyCallback {
      * this fragment using the provided parameters.
      *
      * @param subletId The sublet id.
-     * @return A new instance of fragment SubletFragment.
+     * @return A new instance of fragment SingleSubletPostFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SubletFragment newInstance(String subletId) {
-        SubletFragment fragment = new SubletFragment();
+    public static SingleSubletPostFragment newInstance(String subletId) {
+        SingleSubletPostFragment fragment = new SingleSubletPostFragment();
         Bundle args = new Bundle();
         args.putString(ARG_SUBLET_ID, subletId);
         fragment.setArguments(args);
