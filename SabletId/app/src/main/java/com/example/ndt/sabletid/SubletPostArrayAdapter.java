@@ -35,16 +35,21 @@ public class SubletPostArrayAdapter extends ArrayAdapter<SubletPost> {
 
         SubletPost sublet = sublets.get(position);
 
-        if(sublet.getPhoto() != null) {
+        final ImageView image = listItem.findViewById(R.id.imageView_poster);
+
+        if (sublet.getPhoto() != null) {
             ImageModel.instance.getImage(sublet.getPhoto(), new ImageModel.GetImageListener() {
                 @Override
                 public void onDone(Bitmap bitmap) {
                     if (bitmap != null) {
-                        ImageView image = listItem.findViewById(R.id.imageView_poster);
+
                         image.setImageBitmap(bitmap);
                     }
                 }
             });
+        }
+        else {
+            image.setImageResource(android.R.color.transparent);
         }
 
         TextView city = listItem.findViewById(R.id.spl_location);
