@@ -34,6 +34,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class EditSubletPostFragment extends Fragment implements OnMapReadyCallback {
+    private static final String ARG_DESCRIPTION = "ARG_DESCRIPTION";
+    private static final String ARG_PRICE = "ARG_PRICE";
+    private static final String ARG_START_DATE = "ARG_START_DATE";
+    private static final String ARG_END_DATE = "ARG_END_DATE";
+    private static final String ARG_CITY = "ARG_CITY";
+    private static final String ARG_URL = "EditSubletImage.png";
+
     private static final String ARG_POST_ID = "postId";
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -81,6 +88,10 @@ public class EditSubletPostFragment extends Fragment implements OnMapReadyCallba
         etEndDate = view.findViewById(R.id.etEditSubletPostEndDate);
         etCity = view.findViewById(R.id.etEditSubletPostCity);
         etDescription = view.findViewById(R.id.etEditSubletPostDescription);
+
+        if (savedInstanceState != null) {
+            onRestoreInstanceState(savedInstanceState);
+        }
 
         final OnMapReadyCallback self = this;
 
@@ -247,5 +258,35 @@ public class EditSubletPostFragment extends Fragment implements OnMapReadyCallba
 
             mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         }
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+
+        etDescription.setText(savedInstanceState.getString(ARG_DESCRIPTION));
+        etStartDate.setText(savedInstanceState.getString(ARG_START_DATE));
+        etEndDate.setText(savedInstanceState.getString(ARG_END_DATE));
+        etPrice.setText(savedInstanceState.getString(ARG_PRICE));
+        etCity.setText(savedInstanceState.getString(ARG_CITY));
+
+        Bitmap bitMap = ImageModel.instance.loadImageFromFile(ARG_URL);
+        if (bitMap != null) {
+            ivImage.setImageBitmap(bitMap);
+            imageBitmap = bitMap;
+            ImageModel.instance.DeleteImage(ARG_URL);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle){
+        super.onSaveInstanceState(bundle);
+
+        bundle.putString(ARG_DESCRIPTION, etDescription.getText().toString().trim());
+        bundle.putString(ARG_PRICE, etPrice.getText().toString().trim());
+        bundle.putString(ARG_START_DATE, etStartDate.getText().toString().trim());
+        bundle.putString(ARG_END_DATE, etEndDate.getText().toString().trim());
+        bundle.putString(ARG_CITY, etCity.getText().toString().trim());
+
+        ImageModel.instance.saveImageToFile(imageBitmap, ARG_URL);
     }
 }
