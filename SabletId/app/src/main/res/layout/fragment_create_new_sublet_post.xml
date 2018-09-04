@@ -23,7 +23,7 @@
             android:id="@+id/ivCreateSubletPostEditImage"
             android:layout_width="140dp"
             android:layout_height="140dp"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/ic_action_name" />
 
         <Button
             android:id="@+id/btnCreateSubletPostEditImage"

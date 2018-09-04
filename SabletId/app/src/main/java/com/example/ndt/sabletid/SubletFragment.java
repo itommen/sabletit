@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,8 +12,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ndt.sabletid.Models.Image.ImageModel;
 import com.example.ndt.sabletid.Models.SubletPost.SubletPost;
 import com.example.ndt.sabletid.ViewModels.SubletPostViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,6 +35,7 @@ public class SubletFragment extends Fragment implements OnMapReadyCallback {
     private static final String ARG_SUBLET_ID = "subletId";
 
     private GoogleMap mMap;
+    private ImageView ivImage;
     private SubletPost sublet;
     private String subletId;
 
@@ -70,6 +74,7 @@ public class SubletFragment extends Fragment implements OnMapReadyCallback {
 
         final SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.sublet_map);
+        ivImage = view.findViewById(R.id.ivSubletPostImage);
 
         final OnMapReadyCallback self = this;
 
@@ -83,7 +88,24 @@ public class SubletFragment extends Fragment implements OnMapReadyCallback {
                     ((TextView) view.findViewById(R.id.sfv_price)).setText(Integer.toString(subletPost.getPrice()));
                     ((TextView) view.findViewById(R.id.sfv_from)).setText(subletPost.getStartDate());
                     ((TextView) view.findViewById(R.id.sfv_to)).setText(subletPost.getEndDate());
+                    ((TextView) view.findViewById(R.id.sfv_city)).setText(subletPost.getCity());
                     ((TextView) view.findViewById(R.id.sfv_description)).setText(subletPost.getDescription());
+
+                    String photoUrl = subletPost.getPhoto();
+
+                    if (photoUrl != null) {
+                        ImageModel.instance.getImage(photoUrl, new ImageModel.GetImageListener() {
+                            @Override
+                            public void onDone(Bitmap bitmap) {
+                                if (bitmap != null) {
+                                    ivImage.setImageBitmap(bitmap);
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        ivImage.setImageResource(R.drawable.ic_launcher);
+                    }
 
                     mapFragment.getMapAsync(self);
                 }

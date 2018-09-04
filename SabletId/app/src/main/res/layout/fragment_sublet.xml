@@ -20,7 +20,7 @@
                     android:id="@+id/sfh_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_marginEnd="5dp"
                     android:text="Price:"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
@@ -28,7 +28,7 @@
                     android:id="@+id/sfv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
             </LinearLayout>
 
             <LinearLayout
@@ -36,55 +36,92 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/sfh_from"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="From:"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/sfh_from"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:text="From:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
-                <TextView
-                    android:id="@+id/sfv_from"
+                    <TextView
+                        android:id="@+id/sfv_from"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/sfh_to"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="To:"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+                    <TextView
+                        android:id="@+id/sfh_to"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:text="To:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
-                <TextView
-                    android:id="@+id/sfv_to"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    <TextView
+                        android:id="@+id/sfv_to"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+                </LinearLayout>
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/sfh_city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:text="City:"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+                <TextView
+                    android:id="@+id/sfv_city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/sfh_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="Description:"
+                    android:layout_marginEnd="5dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
                 <TextView
                     android:id="@+id/sfv_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
             </LinearLayout>
-
+            <ImageView
+                android:id="@+id/ivSubletPostImage"
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:src="@drawable/ic_action_name"
+                android:layout_gravity="center_horizontal"
+                />
             <fragment
                 android:id="@+id/sublet_map"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
