@@ -76,11 +76,16 @@ public class SingleSubletPostFragment extends Fragment implements OnMapReadyCall
         subletViewModel.getSubletPostById(subletId).observe(this, new Observer<SubletPost>() {
             @Override
             public void onChanged(@Nullable SubletPost subletPost) {
-                if(subletPost.getId() != null) {
+                if(subletPost != null && subletPost.getId() != null) {
                     userViewModel.getUserById(subletPost.getUserId()).observe(getActivity(), new Observer<User>() {
                         @Override
                         public void onChanged(@Nullable User user) {
-                            ((TextView) view.findViewById(R.id.sfv_owner)).setText(user.getName() + " (" + user.getPhone() + ")");
+                            if (user != null) {
+                                ((TextView) view.findViewById(R.id.sfv_owner)).setText(user.getName() + " (" + user.getPhone() + ")");
+                            }
+                            else {
+                                ((TextView) view.findViewById(R.id.sfv_owner)).setText("");
+                            }
                         }
                     });
 

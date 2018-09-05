@@ -147,7 +147,7 @@
                 android:id="@+id/edit_sublet_map"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="220dp"
                 tools:context=".MapsActivity" />
 
         </LinearLayout>

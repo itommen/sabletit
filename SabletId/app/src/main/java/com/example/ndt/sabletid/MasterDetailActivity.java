@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.ndt.sabletid.Models.User.User;
 import com.example.ndt.sabletid.ViewModels.UserViewModel;
@@ -116,17 +117,28 @@ public class MasterDetailActivity extends AppCompatActivity {
                             }
 
                             case R.id.menu_logout: {
-                                userViewModel.logout();
-                                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                                userViewModel.logout(new UserViewModel.LogoutListener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-                                transaction.replace(R.id.content_frame, new LoginFragment());
-                                transaction.addToBackStack(null);
+                                        transaction.replace(R.id.content_frame, new LoginFragment());
+                                        transaction.addToBackStack(null);
 
-                                transaction.commit();
+                                        transaction.commit();
+                                    }
+
+                                    @Override
+                                    public void onFailure(String errorMessage) {
+                                        Toast.makeText(navigationView.getContext(), "Failed to logout, please try again",
+                                                Toast.LENGTH_LONG).show();
+                                    }
+                                });
+
                             }
                         }
 
-                        if(newFragment != null) {
+                        if (newFragment != null) {
                             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
                             transaction.replace(R.id.content_frame, newFragment);

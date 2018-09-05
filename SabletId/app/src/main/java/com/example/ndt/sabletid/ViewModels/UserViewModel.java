@@ -30,8 +30,24 @@ public class UserViewModel extends ViewModel {
         });
     }
 
-    public void logout() {
-        UserModel.instance.logout();
+    public interface LogoutListener {
+        void onSuccess();
+
+        void onFailure(String errorMessage);
+    }
+
+    public void logout(final LogoutListener listener) {
+        UserModel.instance.logout(new UserModel.LogoutListener() {
+            @Override
+            public void onSuccess() {
+                listener.onSuccess();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                listener.onFailure(errorMessage);
+            }
+        });
     }
 
     public interface RegisterListener {
@@ -106,6 +122,6 @@ public class UserViewModel extends ViewModel {
 
     public LiveData<User> getUserById(String id) {
         UserModel.instance.InitUserId(id);
-        return UserModel.instance.userById;
+        return UserModel.instance.getUserById();
     }
 }

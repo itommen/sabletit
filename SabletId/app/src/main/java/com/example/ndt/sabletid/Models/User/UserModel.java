@@ -11,7 +11,7 @@ public class UserModel {
     private UserModelFirebase userModelFirebase;
     public FirebaseUser connectedFirebaseUser;
     public ConnectedUser connectedUser;
-    public UserById userById;
+    public UserById userById = new UserById();
 
     private UserModel() {
         userModelFirebase = new UserModelFirebase();
@@ -82,8 +82,14 @@ public class UserModel {
         userModelFirebase.loginWithEmailAndPassword(email, password, new UserModelFirebase.LoginListener() {
             @Override
             public void onSuccess() {
-                connectedUser = new ConnectedUser();
-                listener.onSuccess();
+                FirebaseUser user = userModelFirebase.getCurrentUser();
+                userModelFirebase.getUserById(user.getUid(), new UserModelFirebase.GetUserByIdListener() {
+                    @Override
+                    public void onSuccess(User user) {
+                        connectedUser.setValue(user);
+                        listener.onSuccess();
+                    }
+                });
             }
 
             @Override
@@ -93,8 +99,26 @@ public class UserModel {
         });
     }
 
-    public void logout() {
+    public interface LogoutListener {
+        void onSuccess();
+
+        void onFailure(String errorMessage);
+    }
+
+    public void logout(final LogoutListener listener) {
         userModelFirebase.logout();
+
+        AsyncUserDao.deleteAll(new AsyncUserDao.AsyncUserDaoListener<Boolean>() {
+            @Override
+            public void onComplete(Boolean data) {
+                if (data) {
+                    connectedUser.setValue(null);
+                    listener.onSuccess();
+                } else {
+                    listener.onFailure("Signing out has faild.");
+                }
+            }
+        });
     }
 
     public interface RegisterListener {
@@ -111,6 +135,7 @@ public class UserModel {
                 AsyncUserDao.insert(user, new AsyncUserDao.AsyncUserDaoListener<Boolean>() {
                     @Override
                     public void onComplete(Boolean data) {
+                        connectedUser.setValue(user);
                         listener.OnSuccess(user);
                     }
                 });
@@ -196,8 +221,8 @@ public class UserModel {
 
                     userModelFirebase.getUserById(userId, new UserModelFirebase.GetUserByIdListener() {
                         @Override
-                        public void onSuccess(User post) {
-                            setValue(post);
+                        public void onSuccess(User user) {
+                            setValue(user);
                         }
                     });
                 }
@@ -208,6 +233,10 @@ public class UserModel {
         protected void onInactive() {
             super.onInactive();
         }
+    }
+
+    public LiveData<User> getUserById() {
+        return userById;
     }
 
     public void InitUserId(String userId) {

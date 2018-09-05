@@ -103,6 +103,28 @@ public class AsyncUserDao {
         task.execute(user);
     }
 
+    public static void deleteAll(final AsyncUserDaoListener<Boolean> listener) {
+        class UserAsyncTask extends AsyncTask<User, String, Boolean> {
+
+            @Override
+            protected Boolean doInBackground(User... users) {
+                AppDatabase.getInstance().userDao().deleteAll();
+
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                super.onPostExecute(success);
+                listener.onComplete(success);
+            }
+        }
+
+        UserAsyncTask task = new UserAsyncTask();
+        task.execute();
+    }
+
+
     public static void getUserById(final String userId, final AsyncUserDaoListener<User> listener) {
         class UserAsyncTask extends AsyncTask<String, String, User> {
             @Override

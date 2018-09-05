@@ -49,7 +49,7 @@ public class SubletPostArrayAdapter extends ArrayAdapter<SubletPost> {
             });
         }
         else {
-            image.setImageResource(android.R.color.transparent);
+            image.setImageResource(R.drawable.ic_action_name);
         }
 
         TextView city = listItem.findViewById(R.id.spl_location);

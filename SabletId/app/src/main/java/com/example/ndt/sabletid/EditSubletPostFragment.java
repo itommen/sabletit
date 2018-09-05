@@ -50,10 +50,12 @@ public class EditSubletPostFragment extends Fragment implements OnMapReadyCallba
     private ImageView ivImage;
     private SubletPost sublet;
 
+    String photoUrl;
     ProgressBar progressBar;
     private Bitmap imageBitmap;
     EditText etDescription, etPrice, etEndDate, etStartDate, etCity;
     Boolean isImageChanged = false;
+    Boolean isInstanceState = false;
 
     public EditSubletPostFragment() {
 
@@ -88,6 +90,8 @@ public class EditSubletPostFragment extends Fragment implements OnMapReadyCallba
         etEndDate = view.findViewById(R.id.etEditSubletPostEndDate);
         etCity = view.findViewById(R.id.etEditSubletPostCity);
         etDescription = view.findViewById(R.id.etEditSubletPostDescription);
+        progressBar = view.findViewById(R.id.editSubletPostIndeterminateBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
@@ -109,9 +113,9 @@ public class EditSubletPostFragment extends Fragment implements OnMapReadyCallba
                     etCity.setText(subletPost.getCity());
                     etDescription.setText(subletPost.getDescription());
 
-                    String photoUrl = subletPost.getPhoto();
+                    photoUrl = subletPost.getPhoto();
 
-                    if (photoUrl != null) {
+                    if (!isImageChanged && !isInstanceState && photoUrl != null) {
                         ImageModel.instance.getImage(photoUrl, new ImageModel.GetImageListener() {
                             @Override
                             public void onDone(Bitmap bitmap) {
@@ -133,6 +137,7 @@ public class EditSubletPostFragment extends Fragment implements OnMapReadyCallba
         view.findViewById(R.id.btnEditSubletPost).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 final SubletPost subletPost = new SubletPost();
                 subletPost.setId(postId);
                 subletPost.setCity(etCity.getText().toString().trim());
@@ -143,8 +148,11 @@ public class EditSubletPostFragment extends Fragment implements OnMapReadyCallba
                 subletPost.setLatitude(sublet.getLatitude());
                 subletPost.setLongitude(sublet.getLongitude());
                 subletPost.setUserId(sublet.getUserId());
+                subletPost.setPhoto(sublet.getPhoto());
 
-                if (imageBitmap != null) {
+                photoUrl = sublet.getPhoto();
+
+                if (imageBitmap != null && !isInstanceState && photoUrl != null) {
                     ImageModel.instance.saveImage(imageBitmap, new ImageModel.SaveImageListener() {
                         @Override
                         public void onDone(String url) {
@@ -187,9 +195,11 @@ public class EditSubletPostFragment extends Fragment implements OnMapReadyCallba
         view.findViewById(R.id.btnDeleteSubletPost).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 subletPostViewModel.deleteSubletPost(sublet, new SubletPostViewModel.DeleteSubletPostListener() {
                     @Override
                     public void onSuccess() {
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(view.getContext(), "Your sublet post has been deleted successfully",
                                 Toast.LENGTH_LONG).show();
 
@@ -198,6 +208,7 @@ public class EditSubletPostFragment extends Fragment implements OnMapReadyCallba
 
                     @Override
                     public void onFailure(String errorMessage) {
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(view.getContext(), "Failed to delete sublet post, please try again",
                                 Toast.LENGTH_LONG).show();
                     }
@@ -212,12 +223,14 @@ public class EditSubletPostFragment extends Fragment implements OnMapReadyCallba
         subletPostViewModel.updateSubletPost(subletPost, new SubletPostViewModel.UpdateSubletPostListener() {
             @Override
             public void onSuccess() {
+                progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(getView().getContext(), "Your account has been updated successfully",
                         Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(String errorMessage) {
+                progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(getView().getContext(), "Failed to update user, please try again",
                         Toast.LENGTH_LONG).show();
             }
@@ -275,6 +288,8 @@ public class EditSubletPostFragment extends Fragment implements OnMapReadyCallba
             imageBitmap = bitMap;
             ImageModel.instance.DeleteImage(ARG_URL);
         }
+
+        isInstanceState = true;
     }
 
     @Override

@@ -2,15 +2,12 @@
     <string name="app_name">SubletIt</string>
     <string name="login">Login</string>
     <string name="Register">Register</string>
-    <string name="edit_details">Edit Details</string>
-    <string name="create_sublet">Create Sublet</string>
-    <string name="map">Map</string>
+    <string name="edit_details">User Profile</string>
+    <string name="create_sublet">Create New Sublet Post</string>
+    <string name="map">Sublets Map</string>
     <string name="title_activity_maps">Map</string>
     <string name="logout">Logout</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="hdr_all_sublets">All Sublets</string>
-    <string name="all_sublets">All Sublets</string>
-    <string name="my_sublets">My Sublets</string>
+    <string name="hdr_all_sublets">Sublets Feed</string>
+    <string name="all_sublets">Sublets Feed</string>
+    <string name="my_sublets">My Sublet Posts</string>
 </resources>

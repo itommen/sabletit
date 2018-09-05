@@ -45,7 +45,7 @@ public class LoginFragment extends Fragment {
                         Toast.makeText(view.getContext(), "Welcome to SubletIt",
                                 Toast.LENGTH_LONG).show();
 
-                        Fragment newFragment = new UserDetailsFragment();
+                        Fragment newFragment = new AllSubletsListFragment();
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
                         transaction.replace(R.id.content_frame, newFragment);
