@@ -224,7 +224,7 @@ public class EditSubletPostFragment extends Fragment implements OnMapReadyCallba
             @Override
             public void onSuccess() {
                 progressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(getView().getContext(), "Your account has been updated successfully",
+                Toast.makeText(getView().getContext(), "Your sublet post has been updated successfully",
                         Toast.LENGTH_LONG).show();
             }
 

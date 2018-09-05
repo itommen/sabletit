@@ -23,6 +23,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 public class MasterDetailActivity extends AppCompatActivity {
     private UserViewModel userViewModel;
     private User loggedUser = null;
+    private Boolean applicationStarted = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,8 @@ public class MasterDetailActivity extends AppCompatActivity {
         userViewModel.getConnectedUser().observe(this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable final User user) {
-                if((loggedUser == null && user != null) || (loggedUser != null && user == null)) {
+                if((loggedUser == null && user != null) || (loggedUser != null && user == null) || applicationStarted) {
+                    applicationStarted = false;
                     Fragment newFragment;
                     int relevantMenu;
 

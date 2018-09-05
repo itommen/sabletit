@@ -2,12 +2,14 @@ package com.example.ndt.sabletid;
 
 import android.Manifest;
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.ndt.sabletid.Models.Image.ImageModel;
 import com.example.ndt.sabletid.Models.SubletPost.SubletPost;
+import com.example.ndt.sabletid.Models.User.User;
 import com.example.ndt.sabletid.ViewModels.SubletPostViewModel;
 import com.example.ndt.sabletid.ViewModels.UserViewModel;
 import com.google.android.gms.common.api.Status;
@@ -42,7 +45,7 @@ public class CreateNewSubletPostFragment extends Fragment {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    private FirebaseUser connectedUser;
+    private User connectedUser;
     private SubletPostViewModel subletPostViewModel;
     private UserViewModel userViewModel;
 
@@ -70,8 +73,14 @@ public class CreateNewSubletPostFragment extends Fragment {
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         subletPostViewModel = ViewModelProviders.of(this).get(SubletPostViewModel.class);
 
+        userViewModel.getConnectedUser().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(@Nullable User user) {
+                connectedUser = user;
+            }
+        });
+
         progressBar = view.findViewById(R.id.createSubletPostIndeterminateBar);
-        connectedUser = userViewModel.getFirebaseUser();
         etDescription = view.findViewById(R.id.etCreateSubletPostDescription);
         etPrice = view.findViewById(R.id.etCreateSubletPostPrice);
         etStartDate = view.findViewById(R.id.etCreateSubletPostStartDate);
@@ -182,7 +191,7 @@ public class CreateNewSubletPostFragment extends Fragment {
     }
 
     public void saveNewSubletPost() {
-        final SubletPost subletPost = new SubletPost(connectedUser.getUid(), description,
+        final SubletPost subletPost = new SubletPost(connectedUser.getId(), description,
                 startDate, endDate, city, imageUrl, price, latitude, longtitude);
         subletPostViewModel.addNewSubletPost(subletPost, new SubletPostViewModel.AddNewSubletPostListener() {
             @Override
